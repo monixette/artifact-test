@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Freelancer FX Calculator | What You Actually Take Home</title>
     <meta name="description"
-        content="See how much freelancers actually receive after Upwork, Deel, and Payoneer fees. Compare platform fees, FX markups, and withdrawal costs across MXN, BRL, INR, and PHP." />
+        content="See how much freelancers actually receive after Upwork, Deel, Payoneer, PayPal, and Stripe fees. Compare platform fees, FX markups, and withdrawal costs across 23 currencies." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -36,8 +36,6 @@
             --loss-red-bg: #fef2f2;
             --loss-orange: #f97316;
             --loss-orange-bg: #fff7ed;
-            --loss-yellow: #eab308;
-            --loss-yellow-bg: #fefce8;
             --win-green: #22c55e;
             --win-green-bg: #f0fdf4;
             --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -52,6 +50,10 @@
             --upwork-green: #14a800;
             --deel-blue: #1849e2;
             --payoneer-orange: #ff6c00;
+            --paypal-blue: #003087;
+            --stripe-purple: #635bff;
+            --wise-green: #9fe870;
+            --fiverr-green: #1dbf73;
         }
 
         *,
@@ -80,9 +82,7 @@
         h3,
         h4,
         h5,
-        h6,
-        .pair-label .pair-name,
-        .interbank-rate .rate-value {
+        h6 {
             font-family: 'Cardo', Georgia, 'Times New Roman', serif;
         }
 
@@ -94,8 +94,6 @@
             top: 0;
             z-index: 100;
             background: var(--bancoli-navy);
-            padding: 0 40px;
-            height: 64px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -108,7 +106,6 @@
         }
 
         .navbar-logo img {
-            height: 28px;
             width: auto;
         }
 
@@ -118,9 +115,7 @@
             background: transparent;
             border: 1.5px solid var(--bancoli-green);
             color: var(--bancoli-green);
-            padding: 8px 20px;
             border-radius: 6px;
-            font-size: 0.875rem;
             font-weight: 600;
             text-decoration: none;
             font-family: 'Mulish', sans-serif;
@@ -134,21 +129,16 @@
         }
 
         /* ================================================
-           HERO (same as Zero FX page)
+           HERO
            ================================================ */
         .hero {
             background: var(--white);
-            padding: 60px 40px 48px;
             display: flex;
-            align-items: stretch;
-            justify-content: center;
-            gap: 60px;
             position: relative;
             overflow: hidden;
         }
 
         .hero-left {
-            max-width: 460px;
             animation: fadeInUp 0.6s ease both;
             display: flex;
             flex-direction: column;
@@ -161,12 +151,9 @@
             gap: 8px;
             background: rgba(140, 198, 63, 0.12);
             border: 1px solid rgba(140, 198, 63, 0.25);
-            padding: 6px 16px;
             border-radius: 100px;
-            font-size: 0.8rem;
             font-weight: 600;
             color: var(--bancoli-green-dark);
-            margin-bottom: 24px;
             width: fit-content;
         }
 
@@ -195,11 +182,9 @@
 
         .hero h1 {
             font-family: 'Mulish', sans-serif;
-            font-size: 2.8rem;
             font-weight: 200;
             color: #374151;
             line-height: 1.15;
-            margin-bottom: 16px;
             letter-spacing: -0.02em;
         }
 
@@ -211,14 +196,11 @@
         }
 
         .hero-description {
-            font-size: 1.05rem;
             color: var(--gray-600);
             font-weight: 400;
-            margin-bottom: 20px;
         }
 
         .hero-currencies {
-            font-size: 0.9rem;
             color: var(--bancoli-blue);
             font-weight: 600;
         }
@@ -230,8 +212,6 @@
             background: var(--white);
             border-radius: var(--radius-lg);
             box-shadow: var(--shadow-xl);
-            padding: 32px 28px;
-            width: 380px;
             flex-shrink: 0;
             animation: fadeInUp 0.6s ease 0.15s both;
             display: flex;
@@ -253,7 +233,7 @@
             border: 1.5px solid var(--gray-200);
             border-radius: var(--radius-sm);
             overflow: hidden;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             transition: border-color 0.2s;
         }
 
@@ -266,40 +246,105 @@
             flex: 1;
             border: none;
             outline: none;
-            padding: 14px 16px;
-            font-size: 1.1rem;
             font-weight: 600;
             font-family: 'Mulish', sans-serif;
             color: var(--gray-800);
             background: transparent;
         }
 
-        .calc-input-row .currency-badge {
-            padding: 8px 14px;
-            font-size: 0.85rem;
+        /* Currency badge for the "You send" row (USD fixed) */
+        .currency-badge-static {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--gray-50);
+            border-left: 1.5px solid var(--gray-200);
             font-weight: 700;
             color: var(--gray-700);
+            white-space: nowrap;
+        }
+
+
+        /* Currency dropdown for the "You receive" row */
+        .currency-select-wrap {
+            position: relative;
             background: var(--gray-50);
             border-left: 1.5px solid var(--gray-200);
             display: flex;
             align-items: center;
-            gap: 6px;
-            white-space: nowrap;
+        }
+
+        .currency-select-wrap select {
+            appearance: none;
+            -webkit-appearance: none;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-weight: 700;
+            font-family: 'Mulish', sans-serif;
+            color: var(--gray-700);
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+        }
+
+        .currency-select-wrap .chevron {
+            position: absolute;
+            right: 8px;
+            pointer-events: none;
+            color: var(--gray-400);
+            font-size: 0.6rem;
+            z-index: 2;
+        }
+
+        .receive-display {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-weight: 600;
+            font-family: 'Mulish', sans-serif;
+            color: var(--bancoli-green-dark);
+            background: transparent;
+        }
+
+        .calc-divider {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        .calc-divider::before,
+        .calc-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--gray-200);
+        }
+
+        .calc-divider .swap-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray-500);
+            font-size: 0.7rem;
         }
 
         .btn-calculate {
             width: 100%;
-            padding: 14px;
             background: var(--bancoli-green);
             color: var(--bancoli-navy);
             border: none;
             border-radius: var(--radius-sm);
-            font-size: 1rem;
             font-weight: 700;
             font-family: 'Mulish', sans-serif;
             cursor: pointer;
             transition: all 0.25s;
-            margin-bottom: 16px;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-calculate:hover {
@@ -313,31 +358,28 @@
         }
 
         .calc-meta {
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             color: var(--gray-400);
             text-align: center;
             line-height: 1.5;
+            margin-top: 14px;
         }
 
         /* ================================================
            SECTION DIVIDER
            ================================================ */
         .section-divider {
-            padding: 40px 24px;
             text-align: center;
         }
 
         .section-divider h2 {
             font-family: 'Cardo', Georgia, serif;
-            font-size: 1.5rem;
             font-weight: 700;
             color: var(--bancoli-navy);
-            margin-bottom: 8px;
         }
 
         .section-divider p {
             color: var(--gray-500);
-            font-size: 0.95rem;
             max-width: 600px;
             margin: 0 auto;
         }
@@ -347,179 +389,141 @@
            ================================================ */
         .main-content {
             max-width: 1320px;
-            margin: 0 auto 60px;
-            padding: 0 24px;
+            margin: 0 auto;
         }
 
         /* ================================================
-           CURRENCY SECTION
+           PLATFORM CARDS
            ================================================ */
-        .currency-section {
-            margin-bottom: 40px;
-            animation: fadeInUp 0.5s ease both;
+        .platform-cards {
+            display: grid;
         }
 
-        .currency-section:nth-child(1) {
-            animation-delay: 0.1s;
-        }
-
-        .currency-section:nth-child(2) {
-            animation-delay: 0.15s;
-        }
-
-        .currency-section:nth-child(3) {
-            animation-delay: 0.2s;
-        }
-
-        .currency-section:nth-child(4) {
-            animation-delay: 0.25s;
-        }
-
-        .currency-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 20px 28px;
-            background: linear-gradient(135deg, var(--bancoli-navy), var(--bancoli-navy-light));
-            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-        }
-
-        .currency-header .ch-name {
-            font-family: 'Cardo', Georgia, serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--white);
-        }
-
-        .currency-header .ch-full {
-            font-size: 0.78rem;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .currency-header .ch-rate {
-            text-align: right;
-        }
-
-        .currency-header .ch-rate-label {
-            font-size: 0.65rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--bancoli-green);
-        }
-
-        .currency-header .ch-rate-value {
-            font-family: 'Cardo', Georgia, serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--white);
-        }
-
-        /* Comparison table */
-        .comp-table-wrap {
+        .platform-card {
             background: var(--white);
-            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            border-radius: var(--radius-lg);
             box-shadow: var(--shadow-lg);
             overflow: hidden;
             border: 1px solid var(--gray-200);
-            border-top: none;
+            transition: transform 0.25s, box-shadow 0.25s;
         }
 
-        .comp-table {
-            width: 100%;
-            border-collapse: collapse;
+        .platform-card.card-bancoli {
+            border: 2px solid var(--bancoli-green);
         }
 
-        .comp-table thead th {
-            font-size: 0.7rem;
+        .pc-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .pc-header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pc-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .pc-name {
+            font-family: 'Cardo', Georgia, serif;
             font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-            color: var(--gray-500);
-            padding: 14px 16px 10px;
-            text-align: left;
-            border-bottom: 1px solid var(--gray-200);
-            background: var(--gray-50);
-            white-space: nowrap;
-        }
-
-        .comp-table thead th:not(:first-child) {
-            text-align: right;
-        }
-
-        .comp-table tbody tr {
-            transition: all 0.2s ease;
-            cursor: default;
-        }
-
-        .comp-table tbody tr:hover {
-            background: rgba(59, 71, 217, 0.04);
-        }
-
-        .comp-table tbody tr:hover td {
             color: var(--gray-900);
         }
 
-        .comp-table tbody td {
-            padding: 14px 16px;
-            font-size: 0.88rem;
-            border-bottom: 1px solid var(--gray-100);
-            color: var(--gray-700);
-            white-space: nowrap;
-            transition: color 0.2s;
+        .pc-fees-summary {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
-        .comp-table tbody td:not(:first-child) {
-            text-align: right;
+        .pc-fee-chip {
+            border-radius: 100px;
+            font-weight: 600;
+            background: var(--gray-100);
+            color: var(--gray-600);
+            white-space: nowrap;
+        }
+
+        .pc-fee-chip.chip-green {
+            background: var(--bancoli-green-light);
+            color: var(--bancoli-green-dark);
+        }
+
+        .pc-fee-chip.chip-red {
+            background: var(--loss-red-bg);
+            color: var(--loss-red);
+        }
+
+        /* Result block inside each card */
+        .pc-result {
+            padding: 14px 16px;
+        }
+
+        .pc-result-main {
+            margin-bottom: 10px;
+        }
+
+        .pc-result-main-label {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--gray-400);
+            margin-bottom: 2px;
+        }
+
+        .pc-result-main-value {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--gray-800);
+            font-variant-numeric: tabular-nums;
+            line-height: 1.2;
+        }
+
+        .pc-result-main-value.val-green {
+            color: var(--bancoli-green-dark);
+        }
+
+        .pc-result-row {
+            display: flex;
+            gap: 0;
+            border-top: 1px solid var(--gray-100);
+            padding-top: 10px;
+        }
+
+        .pc-result-cell {
+            flex: 1;
+        }
+
+        .pc-result-cell+.pc-result-cell {
+            border-left: 1px solid var(--gray-100);
+            padding-left: 14px;
+        }
+
+        .pc-result-cell-label {
+            font-size: 0.68rem;
+            font-weight: 600;
+            color: var(--gray-400);
+            margin-bottom: 2px;
+        }
+
+        .pc-result-cell-value {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gray-700);
             font-variant-numeric: tabular-nums;
         }
 
-        /* Platform labels */
-        .platform-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 600;
-            font-size: 0.88rem;
+        .pc-result-cell-value.val-green {
+            color: var(--bancoli-green-dark);
         }
 
-        .platform-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            flex-shrink: 0;
-            transition: transform 0.2s;
-        }
-
-        tr:hover .platform-dot {
-            transform: scale(1.3);
-        }
-
-        .platform-bancoli .platform-dot {
-            background: var(--bancoli-green);
-        }
-
-        .platform-upwork .platform-dot {
-            background: var(--upwork-green);
-        }
-
-        .platform-deel .platform-dot {
-            background: var(--deel-blue);
-        }
-
-        .platform-payoneer .platform-dot {
-            background: var(--payoneer-orange);
-        }
-
-        .row-bancoli {
-            background: linear-gradient(90deg, rgba(232, 245, 212, 0.4) 0%, rgba(232, 245, 212, 0.15) 100%);
-        }
-
-        .row-bancoli td {
-            border-bottom: 2px solid rgba(140, 198, 63, 0.25) !important;
-        }
-
-        /* Loss/win badges */
         .badge-win {
             color: var(--win-green);
             background: var(--win-green-bg);
@@ -527,7 +531,7 @@
             border-radius: 100px;
             font-size: 0.78rem;
             font-weight: 700;
-            white-space: nowrap;
+            display: inline-block;
         }
 
         .badge-loss {
@@ -537,7 +541,7 @@
             border-radius: 100px;
             font-size: 0.78rem;
             font-weight: 700;
-            white-space: nowrap;
+            display: inline-block;
         }
 
         .badge-loss-med {
@@ -547,87 +551,7 @@
             border-radius: 100px;
             font-size: 0.78rem;
             font-weight: 700;
-            white-space: nowrap;
-        }
-
-        .val-green {
-            color: var(--bancoli-green-dark);
-            font-weight: 700;
-        }
-
-        .val-dim {
-            color: var(--gray-400);
-            font-size: 0.78rem;
-        }
-
-        /* ================================================
-           FEE BREAKDOWN LEGEND
-           ================================================ */
-        .fee-legend {
-            margin-top: 48px;
-            background: var(--white);
-            border-radius: var(--radius-lg);
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--gray-200);
-            overflow: hidden;
-        }
-
-        .fee-legend-header {
-            padding: 24px 28px;
-            background: var(--gray-50);
-            border-bottom: 1px solid var(--gray-200);
-        }
-
-        .fee-legend-header h3 {
-            font-family: 'Cardo', Georgia, serif;
-            font-size: 1.15rem;
-            color: var(--bancoli-navy);
-        }
-
-        .fee-legend-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 0;
-        }
-
-        .fee-legend-card {
-            padding: 24px;
-            border-right: 1px solid var(--gray-100);
-            border-bottom: 1px solid var(--gray-100);
-        }
-
-        .fee-legend-card:nth-child(4n) {
-            border-right: none;
-        }
-
-        .fee-legend-card:nth-child(n+5) {
-            border-bottom: none;
-        }
-
-        .fee-legend-card .flc-platform {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            font-size: 0.9rem;
-            margin-bottom: 12px;
-            color: var(--gray-800);
-        }
-
-        .fee-legend-card .flc-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            font-size: 0.82rem;
-        }
-
-        .fee-legend-card .flc-label {
-            color: var(--gray-500);
-        }
-
-        .fee-legend-card .flc-value {
-            font-weight: 600;
-            color: var(--gray-800);
+            display: inline-block;
         }
 
         /* ================================================
@@ -635,17 +559,14 @@
            ================================================ */
         .footer-cta {
             text-align: center;
-            padding: 60px 40px 48px;
             background: var(--gray-50);
             border-top: 1px solid var(--gray-200);
         }
 
         .footer-cta h2 {
             font-family: 'Mulish', sans-serif;
-            font-size: 1.8rem;
             font-weight: 200;
             color: #374151;
-            margin-bottom: 12px;
             letter-spacing: -0.02em;
         }
 
@@ -658,8 +579,6 @@
 
         .footer-cta p {
             color: var(--gray-500);
-            margin-bottom: 28px;
-            font-size: 1rem;
         }
 
         .btn-primary {
@@ -668,9 +587,7 @@
             gap: 8px;
             background: var(--bancoli-green);
             color: var(--bancoli-navy);
-            padding: 14px 36px;
             border-radius: var(--radius-md);
-            font-size: 1rem;
             font-weight: 700;
             text-decoration: none;
             transition: all 0.3s;
@@ -690,10 +607,8 @@
 
         .disclaimer {
             text-align: center;
-            padding: 0 40px 40px;
-            font-size: 0.75rem;
             color: var(--gray-400);
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
         }
 
@@ -713,195 +628,426 @@
         }
 
         /* ================================================
-           RESPONSIVE
+           MOBILE-FIRST RESPONSIVE
+           Base = mobile. Scale up with min-width.
            ================================================ */
-        @media (max-width: 1024px) {
-            .hero {
-                flex-direction: column;
-                text-align: center;
-                padding: 50px 24px 40px;
-                gap: 28px;
-            }
 
-            .hero-left {
-                max-width: 100%;
-            }
-
-            .hero-badge {
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            .fee-legend-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .fee-legend-card:nth-child(2n) {
-                border-right: none;
-            }
-
-            .fee-legend-card:nth-child(n+3) {
-                border-bottom: none;
-            }
+        /* --- MOBILE BASE --- */
+        .navbar {
+            padding: 0 16px;
+            height: 56px;
         }
 
-        @media (max-width: 768px) {
+        .navbar-logo img {
+            height: 22px;
+        }
+
+        .navbar-cta {
+            padding: 7px 14px;
+            font-size: 0.8rem;
+        }
+
+        .hero {
+            flex-direction: column;
+            text-align: center;
+            padding: 28px 16px 24px;
+            gap: 18px;
+            align-items: center;
+        }
+
+        .hero-left {
+            max-width: 100%;
+        }
+
+        .hero-badge {
+            margin: 0 auto 18px;
+            font-size: 0.72rem;
+            padding: 5px 14px;
+        }
+
+        .hero h1 {
+            font-size: 1.75rem;
+            margin-bottom: 10px;
+        }
+
+        .hero-description {
+            font-size: 0.88rem;
+            margin-bottom: 12px;
+        }
+
+        .hero-currencies {
+            font-size: 0.8rem;
+        }
+
+        .calc-card {
+            width: 100%;
+            padding: 20px 16px;
+        }
+
+        .calc-input-row input {
+            padding: 12px 14px;
+            font-size: 1rem;
+        }
+
+        .currency-badge-static {
+            padding: 8px 12px;
+            font-size: 0.82rem;
+        }
+
+        .currency-select-wrap select {
+            padding: 8px 28px 8px 12px;
+            font-size: 0.82rem;
+        }
+
+        .receive-display {
+            padding: 12px 14px;
+            font-size: 1rem;
+        }
+
+        .btn-calculate {
+            padding: 13px;
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        .section-divider {
+            padding: 24px 16px 12px;
+        }
+
+        .section-divider h2 {
+            font-size: 1.15rem;
+            margin-bottom: 6px;
+        }
+
+        .section-divider p {
+            font-size: 0.82rem;
+        }
+
+        .main-content {
+            padding: 0 12px;
+            margin-bottom: 36px;
+        }
+
+        .platform-cards {
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .platform-card.card-bancoli {
+            grid-column: auto;
+        }
+
+        .platform-card:hover {
+            transform: none;
+        }
+
+        .pc-header {
+            flex-direction: row;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+        }
+
+        .pc-name {
+            font-size: 1rem;
+        }
+
+        .pc-fee-chip {
+            font-size: 0.65rem;
+            padding: 3px 8px;
+        }
+
+        .pc-result {
+            padding: 12px 16px 14px;
+        }
+
+        .pc-result-main-value {
+            font-size: 1.25rem;
+        }
+
+        .pc-result-cell-value {
+            font-size: 0.95rem;
+        }
+
+        .footer-cta {
+            padding: 32px 16px 36px;
+        }
+
+        .footer-cta h2 {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+        }
+
+        .footer-cta p {
+            font-size: 0.85rem;
+            margin-bottom: 18px;
+        }
+
+        .btn-primary {
+            padding: 13px 28px;
+            font-size: 0.92rem;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .disclaimer {
+            padding: 0 16px 24px;
+            font-size: 0.65rem;
+        }
+
+        /* --- TABLET (>= 600px) --- */
+        @media (min-width: 600px) {
             .navbar {
-                padding: 0 16px;
-                height: 56px;
+                padding: 0 24px;
+                height: 58px;
             }
 
             .navbar-logo img {
-                height: 22px;
-            }
-
-            .navbar-cta {
-                padding: 6px 14px;
-                font-size: 0.8rem;
+                height: 24px;
             }
 
             .hero {
-                padding: 36px 16px 32px;
-                gap: 20px;
+                padding: 36px 24px 28px;
+                gap: 22px;
             }
 
             .hero h1 {
-                font-size: 1.9rem;
-            }
-
-            .hero-description {
-                font-size: 0.95rem;
+                font-size: 2rem;
             }
 
             .calc-card {
-                width: 100%;
+                max-width: 440px;
+                margin: 0 auto;
                 padding: 24px 20px;
             }
 
+            .currency-badge-static {
+                padding: 10px 14px;
+                font-size: 0.85rem;
+            }
+
+            .currency-select-wrap select {
+                padding: 10px 28px 10px 14px;
+                font-size: 0.85rem;
+            }
+
+            .section-divider {
+                padding: 32px 24px 14px;
+            }
+
+            .section-divider h2 {
+                font-size: 1.28rem;
+            }
+
             .main-content {
-                padding: 0 12px;
+                padding: 0 20px;
             }
 
-            .currency-header {
-                flex-direction: column;
-                gap: 8px;
-                align-items: flex-start;
-                padding: 16px 16px;
+            .platform-cards {
+                gap: 20px;
             }
 
-            .currency-header .ch-rate {
-                text-align: left;
+            .pc-header {
+                flex-direction: row;
+                align-items: center;
+                padding: 16px 20px;
             }
 
-            /* Stack table rows on mobile */
-            .comp-table thead {
-                display: none;
+            .pc-result {
+                padding: 16px 20px;
             }
 
-            .comp-table,
-            .comp-table tbody,
-            .comp-table tr,
-            .comp-table td {
-                display: block;
-                width: 100%;
+            .pc-result-main-value {
+                font-size: 1.35rem;
             }
 
-            .comp-table tbody tr {
-                padding: 16px;
-                border-bottom: 1px solid var(--gray-200);
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 8px 12px;
-            }
-
-            .comp-table tbody tr:last-child {
-                border-bottom: none;
-            }
-
-            .comp-table tbody td {
-                padding: 0;
-                border-bottom: none;
-                white-space: normal;
-                text-align: left !important;
-            }
-
-            .comp-table tbody td:nth-child(1) {
-                grid-column: 1 / -1;
-                margin-bottom: 4px;
-            }
-
-            .comp-table tbody td:nth-child(2)::before {
-                content: 'Service fee: ';
-                font-weight: 400;
-                color: var(--gray-400);
-                font-size: 0.72rem;
-            }
-
-            .comp-table tbody td:nth-child(3)::before {
-                content: 'FX markup: ';
-                font-weight: 400;
-                color: var(--gray-400);
-                font-size: 0.72rem;
-            }
-
-            .comp-table tbody td:nth-child(4)::before {
-                content: 'Withdrawal: ';
-                font-weight: 400;
-                color: var(--gray-400);
-                font-size: 0.72rem;
-            }
-
-            .comp-table tbody td:nth-child(5)::before {
-                content: 'You receive: ';
-                font-weight: 400;
-                color: var(--gray-400);
-                font-size: 0.72rem;
-            }
-
-            .comp-table tbody td:nth-child(6)::before {
-                content: 'USD equiv.: ';
-                font-weight: 400;
-                color: var(--gray-400);
-                font-size: 0.72rem;
-            }
-
-            .comp-table tbody td:nth-child(7)::before {
-                content: 'Total lost: ';
-                font-weight: 400;
-                color: var(--gray-400);
-                font-size: 0.72rem;
-            }
-
-            .comp-table tbody td:nth-child(n+2) {
-                display: flex;
-                flex-direction: column;
-                font-size: 0.82rem;
-            }
-
-            .fee-legend-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .fee-legend-card {
-                border-right: none;
-                border-bottom: 1px solid var(--gray-100);
-            }
-
-            .fee-legend-card:last-child {
-                border-bottom: none;
+            .pc-result-cell-value {
+                font-size: 1rem;
             }
 
             .footer-cta {
-                padding: 40px 20px 48px;
+                padding: 44px 24px 40px;
             }
 
-            .footer-cta h2 {
-                font-size: 1.3rem;
+            .btn-primary {
+                width: auto;
             }
 
             .disclaimer {
-                padding: 0 20px 32px;
-                font-size: 0.7rem;
+                padding: 0 24px 32px;
+                font-size: 0.68rem;
+            }
+        }
+
+        /* --- DESKTOP (>= 1024px) --- */
+        @media (min-width: 1024px) {
+            .navbar {
+                padding: 0 40px;
+                height: 64px;
+            }
+
+            .navbar-logo img {
+                height: 28px;
+            }
+
+            .navbar-cta {
+                padding: 8px 20px;
+                font-size: 0.875rem;
+            }
+
+            .hero {
+                flex-direction: row;
+                text-align: left;
+                padding: 56px 40px 48px;
+                gap: 56px;
+                align-items: stretch;
+                justify-content: center;
+            }
+
+            .hero-left {
+                max-width: 460px;
+            }
+
+            .hero-badge {
+                margin: 0 0 20px;
+                font-size: 0.8rem;
+                padding: 6px 16px;
+            }
+
+            .hero h1 {
+                font-size: 2.7rem;
+                margin-bottom: 14px;
+            }
+
+            .hero-description {
+                font-size: 1.02rem;
+                margin-bottom: 18px;
+            }
+
+            .hero-currencies {
+                font-size: 0.88rem;
+            }
+
+            .calc-card {
+                width: 400px;
+                max-width: none;
+                margin: 0;
+                padding: 30px 26px;
+            }
+
+            .calc-input-row input {
+                padding: 14px 16px;
+                font-size: 1.1rem;
+            }
+
+            .currency-badge-static {
+                padding: 10px 16px;
+                font-size: 0.88rem;
+            }
+
+            .currency-select-wrap select {
+                padding: 10px 30px 10px 14px;
+                font-size: 0.88rem;
+            }
+
+            .receive-display {
+                padding: 14px 16px;
+                font-size: 1.1rem;
+            }
+
+            .btn-calculate {
+                padding: 14px;
+                font-size: 1rem;
+            }
+
+            .section-divider {
+                padding: 40px 24px 16px;
+            }
+
+            .section-divider h2 {
+                font-size: 1.45rem;
+            }
+
+            .section-divider p {
+                font-size: 0.92rem;
+            }
+
+            .main-content {
+                padding: 0 24px;
+                margin-bottom: 56px;
+            }
+
+            .platform-cards {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 24px;
+            }
+
+            .platform-card.card-bancoli {
+                grid-column: 1 / -1;
+            }
+
+            .platform-card:hover {
+                transform: translateY(-3px);
+                box-shadow: var(--shadow-xl);
+            }
+
+            .pc-header {
+                padding: 18px 24px;
+            }
+
+            .pc-name {
+                font-size: 1.1rem;
+            }
+
+            .pc-fee-chip {
+                font-size: 0.68rem;
+                padding: 4px 10px;
+            }
+
+            .pc-result {
+                padding: 18px 24px;
+            }
+
+            .pc-result-main-value {
+                font-size: 1.45rem;
+            }
+
+            .pc-result-cell-value {
+                font-size: 1.05rem;
+            }
+
+            .footer-cta {
+                padding: 56px 40px 44px;
+            }
+
+            .footer-cta h2 {
+                font-size: 1.7rem;
+            }
+
+            .footer-cta p {
+                font-size: 0.95rem;
+                margin-bottom: 26px;
+            }
+
+            .btn-primary {
+                padding: 14px 36px;
+                font-size: 1rem;
+            }
+
+            .disclaimer {
+                padding: 0 40px 36px;
+                font-size: 0.72rem;
+            }
+        }
+
+        /* --- WIDE DESKTOP (>= 1280px) --- */
+        @media (min-width: 1280px) {
+            .platform-cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .platform-card.card-bancoli {
+                grid-column: 1 / -1;
             }
         }
     </style>
@@ -922,20 +1068,37 @@
         <div class="hero-left">
             <div class="hero-badge">Freelancer FX calculator</div>
             <h1>Keep <span class="accent">100%</span> of your money</h1>
-            <p class="hero-description">Stop paying hidden fees. With Bancoli, you can get the real mid-market rate.</p>
+            <p class="hero-description">Your client pays you $1,000. See how much actually lands in your bank account
+                after every platform takes their cut.</p>
             <p class="hero-currencies">Available for 25+ currencies.</p>
         </div>
 
         <div class="calc-card">
-            <span class="calc-field-label">Client pays you</span>
+            <!-- YOU SEND -->
+            <span class="calc-field-label">You send</span>
             <div class="calc-input-row">
                 <input type="text" id="sendAmount" value="1,000" aria-label="Amount in USD" />
-                <span class="currency-badge">USD</span>
+                <span class="currency-badge-static">USD</span>
+            </div>
+
+            <!-- DIVIDER -->
+            <div class="calc-divider">
+                <span class="swap-icon">&#8595;</span>
+            </div>
+
+            <!-- YOU RECEIVE -->
+            <span class="calc-field-label">You receive</span>
+            <div class="calc-input-row" style="border-color: var(--bancoli-green);">
+                <span class="receive-display" id="receiveDisplay">17,176.00</span>
+                <div class="currency-select-wrap">
+                    <select id="currencySelect" aria-label="Select target currency"></select>
+                    <span class="chevron">&#9660;</span>
+                </div>
             </div>
 
             <button class="btn-calculate" id="btnCalculate" type="button">Calculate</button>
 
-            <p class="calc-meta">Rates sourced from interbank mid-market<br>Last updated: Feb 12, 2026 at 3:38 PM CST
+            <p class="calc-meta">Rates sourced from interbank mid-market<br>Last updated: Feb 12, 2026 at 4:07 PM CST
             </p>
         </div>
     </section>
@@ -943,70 +1106,12 @@
     <!-- SECTION DIVIDER -->
     <div class="section-divider">
         <h2>What you actually take home after platform fees</h2>
-        <p>Your client pays $1,000 USD. Here is how much actually lands in your bank account across Upwork, Deel,
-            Payoneer, and Bancoli.</p>
+        <p id="dividerText">Your client pays $1,000.00 USD. Here is how much you receive across 8 platforms.</p>
     </div>
 
     <!-- MAIN CONTENT -->
     <main class="main-content" id="main-content">
-        <div id="currencyResults"></div>
-
-        <!-- FEE LEGEND -->
-        <div class="fee-legend">
-            <div class="fee-legend-header">
-                <h3>How we calculated each platform</h3>
-            </div>
-            <div class="fee-legend-grid">
-                <div class="fee-legend-card">
-                    <div class="flc-platform">
-                        <span class="platform-dot" style="background: var(--bancoli-green);"></span>
-                        Bancoli
-                    </div>
-                    <div class="flc-row"><span class="flc-label">Service fee</span><span class="flc-value">0%</span>
-                    </div>
-                    <div class="flc-row"><span class="flc-label">FX markup</span><span class="flc-value">0% (interbank
-                            rate)</span></div>
-                    <div class="flc-row"><span class="flc-label">Withdrawal</span><span class="flc-value">$0</span>
-                    </div>
-                </div>
-                <div class="fee-legend-card">
-                    <div class="flc-platform">
-                        <span class="platform-dot" style="background: var(--upwork-green);"></span>
-                        Upwork
-                    </div>
-                    <div class="flc-row"><span class="flc-label">Service fee</span><span class="flc-value">10%</span>
-                    </div>
-                    <div class="flc-row"><span class="flc-label">FX markup</span><span class="flc-value">~2.5% above
-                            mid-market</span></div>
-                    <div class="flc-row"><span class="flc-label">Withdrawal</span><span class="flc-value">$0.99 (local
-                            bank)</span></div>
-                </div>
-                <div class="fee-legend-card">
-                    <div class="flc-platform">
-                        <span class="platform-dot" style="background: var(--deel-blue);"></span>
-                        Deel
-                    </div>
-                    <div class="flc-row"><span class="flc-label">Service fee</span><span class="flc-value">0%</span>
-                    </div>
-                    <div class="flc-row"><span class="flc-label">FX markup</span><span class="flc-value">~2% (forward
-                            rate)</span></div>
-                    <div class="flc-row"><span class="flc-label">Withdrawal</span><span class="flc-value">$5 (local
-                            bank)</span></div>
-                </div>
-                <div class="fee-legend-card">
-                    <div class="flc-platform">
-                        <span class="platform-dot" style="background: var(--payoneer-orange);"></span>
-                        Payoneer
-                    </div>
-                    <div class="flc-row"><span class="flc-label">Service fee</span><span class="flc-value">0%</span>
-                    </div>
-                    <div class="flc-row"><span class="flc-label">FX markup</span><span class="flc-value">3% above
-                            mid-market</span></div>
-                    <div class="flc-row"><span class="flc-label">Withdrawal</span><span class="flc-value">$0 (local
-                            bank)</span></div>
-                </div>
-            </div>
-        </div>
+        <div class="platform-cards" id="platformCards"></div>
     </main>
 
     <!-- FOOTER CTA -->
@@ -1024,147 +1129,241 @@
     </section>
 
     <p class="disclaimer">
-        Exchange rates shown are interbank mid-market rates. Last updated: Feb 12, 2026 at 3:38 PM CST. Actual rates may
-        vary.
-        Upwork service fee shown is the standard 10% as of May 2025 (new contracts may vary 0-15%).
-        Deel FX markup is estimated at ~2% based on their institutional forward rate policy.
-        Payoneer FX markup is 3% for local currency withdrawals as of March 2025.
-        Bancoli offers Zero FX fees on supported currency corridors. This is a comparison for illustration purposes.
+        Exchange rates shown are interbank mid-market rates as of Feb 12, 2026 at 4:07 PM CST.
+        Upwork standard 10% service fee (new contracts as of May 2025 may vary 0-15%).
+        Deel ~2% FX markup based on their institutional forward rate policy.
+        Payoneer 3% FX markup for local currency withdrawals (March 2025).
+        PayPal 2.99% + $0.49 receiving fee, ~3.5% FX spread.
+        Stripe 2.9% + $0.30 processing, ~1% FX conversion.
+        Wise fees vary per currency and are based on direct debit rates (fixed + %) from wise.com pricing pages.
+        Fiverr 20% service fee, withdrawals via Payoneer at ~2% FX + $3 bank transfer.
+        Bancoli offers Zero FX fees on supported corridors. For illustration purposes.
     </p>
 
     <script>
-        // ---- DATA ----
+        // ---- CURRENCY DATA (Feb 12, 2026 mid-market) ----
         const CURRENCIES = [
-            { code: 'MXN', name: 'Mexican Peso', full: 'USD to MXN', rate: 17.1760 },
-            { code: 'BRL', name: 'Brazilian Real', full: 'USD to BRL', rate: 5.1750 },
-            { code: 'INR', name: 'Indian Rupee', full: 'USD to INR', rate: 90.5230 },
-            { code: 'PHP', name: 'Philippine Peso', full: 'USD to PHP', rate: 58.0850 }
+            { code: 'MXN', name: 'Mexican Peso', rate: 17.1760 },
+            { code: 'EUR', name: 'Euro', rate: 0.8421 },
+            { code: 'GBP', name: 'British Pound', rate: 0.7337 },
+            { code: 'BRL', name: 'Brazilian Real', rate: 5.1750 },
+            { code: 'INR', name: 'Indian Rupee', rate: 90.5230 },
+            { code: 'PHP', name: 'Philippine Peso', rate: 58.0850 },
+            { code: 'AED', name: 'UAE Dirham', rate: 3.6725 },
+            { code: 'AUD', name: 'Australian Dollar', rate: 1.4039 },
+            { code: 'CAD', name: 'Canadian Dollar', rate: 1.3615 },
+            { code: 'CLP', name: 'Chilean Peso', rate: 853.78 },
+            { code: 'CNY', name: 'Chinese Yuan', rate: 6.8994 },
+            { code: 'GHS', name: 'Ghanaian Cedi', rate: 11.0009 },
+            { code: 'HKD', name: 'Hong Kong Dollar', rate: 7.8167 },
+            { code: 'IDR', name: 'Indonesian Rupiah', rate: 16820 },
+            { code: 'JPY', name: 'Japanese Yen', rate: 152.929 },
+            { code: 'KRW', name: 'South Korean Won', rate: 1436.98 },
+            { code: 'NGN', name: 'Nigerian Naira', rate: 1411.91 },
+            { code: 'PEN', name: 'Peruvian Sol', rate: 3.3567 },
+            { code: 'SGD', name: 'Singapore Dollar', rate: 1.2608 },
+            { code: 'THB', name: 'Thai Baht', rate: 30.955 },
+            { code: 'UGX', name: 'Ugandan Shilling', rate: 3538.11 },
+            { code: 'VND', name: 'Vietnamese Dong', rate: 25926 },
+            { code: 'ZMW', name: 'Zambian Kwacha', rate: 18.4592 }
         ];
 
-        // Platform configs: serviceFee (% of gross), fxMarkup (% above mid-market), withdrawalFlat ($)
+        /*
+         * Wise per-currency fee map (direct debit, $1,000 USD).
+         * Format: { flat: USD, pct: decimal }
+         * Source: wise.com/us/pricing/send-money pages, June 2025.
+         */
+        const WISE_FEES = {
+            MXN: { flat: 1.25, pct: 0.0085 },
+            EUR: { flat: 1.25, pct: 0.0065 },
+            GBP: { flat: 1.25, pct: 0.0075 },
+            BRL: { flat: 1.25, pct: 0.011 },
+            INR: { flat: 1.17, pct: 0.008 },
+            PHP: { flat: 3.50, pct: 0.009 },
+            AED: { flat: 3.00, pct: 0.008 },
+            AUD: { flat: 1.25, pct: 0.0075 },
+            CAD: { flat: 1.00, pct: 0.0075 },
+            CLP: { flat: 1.25, pct: 0.010 },
+            CNY: { flat: 8.00, pct: 0.0125 },
+            GHS: { flat: 3.00, pct: 0.012 },
+            HKD: { flat: 1.25, pct: 0.006 },
+            IDR: { flat: 3.50, pct: 0.010 },
+            JPY: { flat: 1.25, pct: 0.006 },
+            KRW: { flat: 3.00, pct: 0.010 },
+            NGN: { flat: 3.50, pct: 0.015 },
+            PEN: { flat: 3.00, pct: 0.012 },
+            SGD: { flat: 1.25, pct: 0.006 },
+            THB: { flat: 1.25, pct: 0.007 },
+            UGX: { flat: 3.50, pct: 0.015 },
+            VND: { flat: 3.50, pct: 0.012 },
+            ZMW: { flat: 3.50, pct: 0.015 }
+        };
+
+        // ---- PLATFORMS ----
         const PLATFORMS = [
-            { id: 'bancoli', name: 'Bancoli (0% FX)', serviceFee: 0, fxMarkup: 0, withdrawalFlat: 0, cssClass: 'platform-bancoli', isWinner: true },
-            { id: 'upwork', name: 'Upwork', serviceFee: 0.10, fxMarkup: 0.025, withdrawalFlat: 0.99, cssClass: 'platform-upwork', isWinner: false },
-            { id: 'deel', name: 'Deel', serviceFee: 0, fxMarkup: 0.02, withdrawalFlat: 5, cssClass: 'platform-deel', isWinner: false },
-            { id: 'payoneer', name: 'Payoneer', serviceFee: 0, fxMarkup: 0.03, withdrawalFlat: 0, cssClass: 'platform-payoneer', isWinner: false }
+            {
+                id: 'bancoli', name: 'Bancoli', color: 'var(--bancoli-green)',
+                servicePct: 0, serviceFlat: 0, fxMarkup: 0, withdrawFlat: 0,
+                feeLabels: ['0% service', '0% FX', '$0 withdrawal'],
+                chipStyle: 'chip-green'
+            },
+            {
+                id: 'upwork', name: 'Upwork', color: 'var(--upwork-green)',
+                servicePct: 0.10, serviceFlat: 0, fxMarkup: 0.025, withdrawFlat: 0.99,
+                feeLabels: ['10% service', '2.5% FX', '$0.99 withdrawal'],
+                chipStyle: 'chip-red'
+            },
+            {
+                id: 'fiverr', name: 'Fiverr', color: 'var(--fiverr-green)',
+                servicePct: 0.20, serviceFlat: 0, fxMarkup: 0.02, withdrawFlat: 3,
+                feeLabels: ['20% service', '2% FX', '$3 withdrawal'],
+                chipStyle: 'chip-red'
+            },
+            {
+                id: 'deel', name: 'Deel', color: 'var(--deel-blue)',
+                servicePct: 0, serviceFlat: 0, fxMarkup: 0.02, withdrawFlat: 5,
+                feeLabels: ['0% service', '2% FX', '$5 withdrawal'],
+                chipStyle: ''
+            },
+            {
+                id: 'payoneer', name: 'Payoneer', color: 'var(--payoneer-orange)',
+                servicePct: 0, serviceFlat: 0, fxMarkup: 0.03, withdrawFlat: 0,
+                feeLabels: ['0% service', '3% FX', '$0 withdrawal'],
+                chipStyle: 'chip-red'
+            },
+            {
+                id: 'paypal', name: 'PayPal', color: 'var(--paypal-blue)',
+                servicePct: 0.0299, serviceFlat: 0.49, fxMarkup: 0.035, withdrawFlat: 0,
+                feeLabels: ['2.99%+$0.49', '3.5% FX', '$0 withdrawal'],
+                chipStyle: 'chip-red'
+            },
+            {
+                id: 'stripe', name: 'Stripe', color: 'var(--stripe-purple)',
+                servicePct: 0.029, serviceFlat: 0.30, fxMarkup: 0.01, withdrawFlat: 0.25,
+                feeLabels: ['2.9%+$0.30', '1% FX', '$0.25 payout'],
+                chipStyle: ''
+            },
+            {
+                id: 'wise', name: 'Wise', color: 'var(--wise-green)',
+                servicePct: 0, serviceFlat: 0, fxMarkup: 0, withdrawFlat: 0,
+                feeLabels: ['Varies per currency'],
+                chipStyle: '',
+                isWise: true
+            }
         ];
 
         // ---- HELPERS ----
-        function parseAmount(str) {
-            return parseFloat(str.replace(/,/g, '')) || 0;
-        }
+        function parseAmount(str) { return parseFloat(str.replace(/,/g, '')) || 0; }
 
         function fmt(n) {
             return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
         }
 
-        function fmtRate(rate) {
-            return rate.toFixed(4);
+        function lostBadge(lostUSD) {
+            if (lostUSD < 0.01) return '<span class="badge-win">$0.00</span>';
+            if (lostUSD < 30) return `<span class="badge-loss-med">-$${fmt(lostUSD)}</span>`;
+            return `<span class="badge-loss">-$${fmt(lostUSD)}</span>`;
         }
+
+        // ---- BUILD DROPDOWN ----
+        const selectEl = document.getElementById('currencySelect');
+
+        CURRENCIES.forEach(cur => {
+            const opt = document.createElement('option');
+            opt.value = cur.code;
+            opt.textContent = cur.code + ' - ' + cur.name;
+            selectEl.appendChild(opt);
+        });
+
+        selectEl.addEventListener('change', () => { render(); });
 
         // ---- RENDERING ----
         function render() {
             const grossUSD = parseAmount(document.getElementById('sendAmount').value);
-            const container = document.getElementById('currencyResults');
+            const curCode = selectEl.value;
+            const cur = CURRENCIES.find(c => c.code === curCode);
+            if (!cur) return;
+
+            // Update "You receive" display (Bancoli = interbank, full amount)
+            const bancoliReceive = grossUSD * cur.rate;
+            document.getElementById('receiveDisplay').textContent = fmt(bancoliReceive);
+
+            // Platform cards
+            const container = document.getElementById('platformCards');
             let html = '';
 
-            CURRENCIES.forEach(cur => {
-                const bancoliLocal = grossUSD * cur.rate;
+            PLATFORMS.forEach((p, idx) => {
+                let receivedLocal, receivedUSD, lostUSD, feeChipHTML;
 
-                let rowsHTML = '';
-                PLATFORMS.forEach(p => {
-                    // 1. Service fee (deducted from gross in USD)
-                    const afterService = grossUSD * (1 - p.serviceFee);
-                    const serviceFeeUSD = grossUSD * p.serviceFee;
-
-                    // 2. Withdrawal flat fee (deducted in USD before conversion)
-                    const afterWithdrawal = Math.max(afterService - p.withdrawalFlat, 0);
-
-                    // 3. FX conversion: effective rate = mid-market * (1 - markup)
+                if (p.isWise) {
+                    // Wise: flat + pct fee from USD, then convert at mid-market (0% FX markup)
+                    const wf = WISE_FEES[curCode] || { flat: 2.00, pct: 0.01 };
+                    const wiseFee = wf.flat + (grossUSD * wf.pct);
+                    const afterFee = Math.max(grossUSD - wiseFee, 0);
+                    receivedLocal = afterFee * cur.rate; // Wise uses mid-market rate
+                    receivedUSD = afterFee;
+                    lostUSD = grossUSD - receivedUSD;
+                    const wisePctLabel = (wf.pct * 100).toFixed(2) + '%';
+                    feeChipHTML = `<span class="pc-fee-chip">$${wf.flat.toFixed(2)} + ${wisePctLabel}</span><span class="pc-fee-chip chip-green">0% FX markup</span>`;
+                } else {
+                    const afterService = grossUSD * (1 - p.servicePct) - p.serviceFlat;
+                    const afterWithdraw = Math.max(afterService - p.withdrawFlat, 0);
                     const effectiveRate = cur.rate * (1 - p.fxMarkup);
-                    const receivedLocal = afterWithdrawal * effectiveRate;
+                    receivedLocal = afterWithdraw * effectiveRate;
+                    receivedUSD = receivedLocal / cur.rate;
+                    lostUSD = grossUSD - receivedUSD;
+                    feeChipHTML = '';
+                    p.feeLabels.forEach(label => {
+                        feeChipHTML += `<span class="pc-fee-chip ${p.chipStyle}">${label}</span>`;
+                    });
+                }
 
-                    // USD equivalent of what was received
-                    const receivedUSDEquiv = receivedLocal / cur.rate;
-                    const totalLostUSD = grossUSD - receivedUSDEquiv;
-
-                    const rowClass = p.isWinner ? 'row-bancoli' : '';
-                    const deliveredClass = p.isWinner ? 'val-green' : '';
-
-                    let lostBadge;
-                    if (totalLostUSD < 0.01) {
-                        lostBadge = '<span class="badge-win">$0.00</span>';
-                    } else if (totalLostUSD < 50) {
-                        lostBadge = `<span class="badge-loss-med">-$${fmt(totalLostUSD)}</span>`;
-                    } else {
-                        lostBadge = `<span class="badge-loss">-$${fmt(totalLostUSD)}</span>`;
-                    }
-
-                    rowsHTML += `
-                    <tr class="${rowClass}">
-                      <td>
-                        <span class="platform-label ${p.cssClass}">
-                          <span class="platform-dot"></span>
-                          ${p.name}
-                        </span>
-                      </td>
-                      <td>${p.serviceFee > 0 ? '-$' + fmt(serviceFeeUSD) : '$0.00'}</td>
-                      <td>${p.fxMarkup > 0 ? (p.fxMarkup * 100).toFixed(1) + '%' : '0%'} <span class="val-dim">(${fmtRate(effectiveRate)})</span></td>
-                      <td>${p.withdrawalFlat > 0 ? '-$' + fmt(p.withdrawalFlat) : '$0.00'}</td>
-                      <td class="${deliveredClass}">${fmt(receivedLocal)} ${cur.code}</td>
-                      <td class="${deliveredClass}">$${fmt(receivedUSDEquiv)}</td>
-                      <td>${lostBadge}</td>
-                    </tr>`;
-                });
+                const isBancoli = p.id === 'bancoli';
+                const cardClass = isBancoli ? 'platform-card card-bancoli' : 'platform-card';
+                const valClass = isBancoli ? 'val-green' : '';
+                const delay = 0.05 * idx;
 
                 html += `
-                <div class="currency-section">
-                  <div class="currency-header">
-                    <div>
-                      <div class="ch-name">USD &rarr; ${cur.code}</div>
-                      <div class="ch-full">${cur.name}</div>
+                <div class="${cardClass}" style="animation: fadeInUp 0.45s ease ${delay}s both;">
+                  <div class="pc-header">
+                    <div class="pc-header-left">
+                      <span class="pc-dot" style="background: ${p.color};"></span>
+                      <span class="pc-name">${p.name}</span>
                     </div>
-                    <div class="ch-rate">
-                      <div class="ch-rate-label">Interbank Rate</div>
-                      <div class="ch-rate-value">1 USD = ${fmtRate(cur.rate)} ${cur.code}</div>
-                    </div>
+                    <div class="pc-fees-summary">${feeChipHTML}</div>
                   </div>
-                  <div class="comp-table-wrap">
-                    <table class="comp-table">
-                      <thead>
-                        <tr>
-                          <th>Platform</th>
-                          <th>Service Fee</th>
-                          <th>FX Markup (Rate)</th>
-                          <th>Withdrawal Fee</th>
-                          <th>You Receive</th>
-                          <th>USD Equivalent</th>
-                          <th>Total Lost</th>
-                        </tr>
-                      </thead>
-                      <tbody>${rowsHTML}</tbody>
-                    </table>
+                  <div class="pc-result">
+                    <div class="pc-result-main">
+                      <div class="pc-result-main-label">You receive in ${cur.code}</div>
+                      <div class="pc-result-main-value ${valClass}">${fmt(receivedLocal)} ${cur.code}</div>
+                    </div>
+                    <div class="pc-result-row">
+                      <div class="pc-result-cell">
+                        <div class="pc-result-cell-label">Worth in USD</div>
+                        <div class="pc-result-cell-value ${valClass}">$${fmt(receivedUSD)}</div>
+                      </div>
+                      <div class="pc-result-cell">
+                        <div class="pc-result-cell-label">${isBancoli ? 'Fees lost' : 'You lose'}</div>
+                        <div class="pc-result-cell-value">${lostBadge(lostUSD)}${!isBancoli && lostUSD > 0.01 ? ' <span style="font-size:0.72rem;color:var(--gray-400);">(' + (lostUSD / grossUSD * 100).toFixed(1) + '%)</span>' : ''}</div>
+                      </div>
+                    </div>
                   </div>
                 </div>`;
             });
 
             container.innerHTML = html;
 
-            // Update section divider text
-            const dividerP = document.querySelector('.section-divider p');
-            if (dividerP) {
-                dividerP.textContent = `Your client pays $${fmt(grossUSD)} USD. Here is how much actually lands in your bank account across Upwork, Deel, Payoneer, and Bancoli.`;
-            }
+            // Divider text
+            const dt = document.getElementById('dividerText');
+            if (dt) dt.textContent = `Your client pays $${fmt(grossUSD)} USD to ${cur.code}. Here is how much you receive across 8 platforms.`;
         }
 
         // ---- INPUT FORMATTING ----
         const amountInput = document.getElementById('sendAmount');
-
         amountInput.addEventListener('input', () => {
             let raw = amountInput.value.replace(/[^0-9.]/g, '');
             const parts = raw.split('.');
             if (parts.length > 2) raw = parts[0] + '.' + parts.slice(1).join('');
-
             const num = parseFloat(raw);
             if (!isNaN(num)) {
                 const intPart = Math.floor(num).toLocaleString('en-US');
