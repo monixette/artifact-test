@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Freelancer FX Calculator | What You Actually Take Home</title>
+    <meta name="description"
+        content="See how much freelancers actually receive after Upwork, Deel, and Payoneer fees. Compare platform fees, FX markups, and withdrawal costs across MXN, BRL, INR, and PHP." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Mulish:wght@200;300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <style>
+        :root {
+            --bancoli-navy: #1a1f4e;
+            --bancoli-navy-light: #252a6a;
+            --bancoli-blue: #3b47d9;
+            --bancoli-indigo: #5b5fc7;
+            --bancoli-green: #8cc63f;
+            --bancoli-green-dark: #6fa830;
+            --bancoli-green-light: #e8f5d4;
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+            --loss-red: #ef4444;
+            --loss-red-bg: #fef2f2;
+            --loss-orange: #f97316;
+            --loss-orange-bg: #fff7ed;
+            --loss-yellow: #eab308;
+            --loss-yellow-bg: #fefce8;
+            --win-green: #22c55e;
+            --win-green-bg: #f0fdf4;
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 20px 40px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+
+            --upwork-green: #14a800;
+            --deel-blue: #1849e2;
+            --payoneer-orange: #ff6c00;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Mulish', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .pair-label .pair-name,
+        .interbank-rate .rate-value {
+            font-family: 'Cardo', Georgia, 'Times New Roman', serif;
+        }
+
+        /* ================================================
+           NAVBAR
+           ================================================ */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bancoli-navy);
+            padding: 0 40px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 12px rgba(26, 31, 78, 0.25);
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar-logo img {
+            height: 28px;
+            width: auto;
+        }
+
+        .navbar-cta {
+            display: inline-flex;
+            align-items: center;
+            background: transparent;
+            border: 1.5px solid var(--bancoli-green);
+            color: var(--bancoli-green);
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            text-decoration: none;
+            font-family: 'Mulish', sans-serif;
+            transition: all 0.25s;
+            white-space: nowrap;
+        }
+
+        .navbar-cta:hover {
+            background: var(--bancoli-green);
+            color: var(--bancoli-navy);
+        }
+
+        /* ================================================
+           HERO (same as Zero FX page)
+           ================================================ */
+        .hero {
+            background: var(--white);
+            padding: 60px 40px 48px;
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+            gap: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-left {
+            max-width: 460px;
+            animation: fadeInUp 0.6s ease both;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(140, 198, 63, 0.12);
+            border: 1px solid rgba(140, 198, 63, 0.25);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--bancoli-green-dark);
+            margin-bottom: 24px;
+            width: fit-content;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--bancoli-green);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.4);
+            }
+        }
+
+        .hero h1 {
+            font-family: 'Mulish', sans-serif;
+            font-size: 2.8rem;
+            font-weight: 200;
+            color: #374151;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            letter-spacing: -0.02em;
+        }
+
+        .hero h1 .accent {
+            font-family: 'Cardo', Georgia, serif;
+            color: var(--bancoli-blue);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .hero-description {
+            font-size: 1.05rem;
+            color: var(--gray-600);
+            font-weight: 400;
+            margin-bottom: 20px;
+        }
+
+        .hero-currencies {
+            font-size: 0.9rem;
+            color: var(--bancoli-blue);
+            font-weight: 600;
+        }
+
+        /* ================================================
+           CALCULATOR CARD
+           ================================================ */
+        .calc-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            padding: 32px 28px;
+            width: 380px;
+            flex-shrink: 0;
+            animation: fadeInUp 0.6s ease 0.15s both;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .calc-field-label {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--gray-500);
+            margin-bottom: 6px;
+            display: block;
+        }
+
+        .calc-input-row {
+            display: flex;
+            align-items: center;
+            border: 1.5px solid var(--gray-200);
+            border-radius: var(--radius-sm);
+            overflow: hidden;
+            margin-bottom: 20px;
+            transition: border-color 0.2s;
+        }
+
+        .calc-input-row:focus-within {
+            border-color: var(--bancoli-green);
+            box-shadow: 0 0 0 3px rgba(140, 198, 63, 0.12);
+        }
+
+        .calc-input-row input {
+            flex: 1;
+            border: none;
+            outline: none;
+            padding: 14px 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            font-family: 'Mulish', sans-serif;
+            color: var(--gray-800);
+            background: transparent;
+        }
+
+        .calc-input-row .currency-badge {
+            padding: 8px 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--gray-700);
+            background: var(--gray-50);
+            border-left: 1.5px solid var(--gray-200);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-calculate {
+            width: 100%;
+            padding: 14px;
+            background: var(--bancoli-green);
+            color: var(--bancoli-navy);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Mulish', sans-serif;
+            cursor: pointer;
+            transition: all 0.25s;
+            margin-bottom: 16px;
+        }
+
+        .btn-calculate:hover {
+            background: var(--bancoli-green-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(140, 198, 63, 0.3);
+        }
+
+        .btn-calculate:active {
+            transform: translateY(0);
+        }
+
+        .calc-meta {
+            font-size: 0.72rem;
+            color: var(--gray-400);
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        /* ================================================
+           SECTION DIVIDER
+           ================================================ */
+        .section-divider {
+            padding: 40px 24px;
+            text-align: center;
+        }
+
+        .section-divider h2 {
+            font-family: 'Cardo', Georgia, serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--bancoli-navy);
+            margin-bottom: 8px;
+        }
+
+        .section-divider p {
+            color: var(--gray-500);
+            font-size: 0.95rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ================================================
+           MAIN CONTENT
+           ================================================ */
+        .main-content {
+            max-width: 1320px;
+            margin: 0 auto 60px;
+            padding: 0 24px;
+        }
+
+        /* ================================================
+           CURRENCY SECTION
+           ================================================ */
+        .currency-section {
+            margin-bottom: 40px;
+            animation: fadeInUp 0.5s ease both;
+        }
+
+        .currency-section:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .currency-section:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .currency-section:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .currency-section:nth-child(4) {
+            animation-delay: 0.25s;
+        }
+
+        .currency-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 28px;
+            background: linear-gradient(135deg, var(--bancoli-navy), var(--bancoli-navy-light));
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        }
+
+        .currency-header .ch-name {
+            font-family: 'Cardo', Georgia, serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .currency-header .ch-full {
+            font-size: 0.78rem;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .currency-header .ch-rate {
+            text-align: right;
+        }
+
+        .currency-header .ch-rate-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--bancoli-green);
+        }
+
+        .currency-header .ch-rate-value {
+            font-family: 'Cardo', Georgia, serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        /* Comparison table */
+        .comp-table-wrap {
+            background: var(--white);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+            border-top: none;
+        }
+
+        .comp-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comp-table thead th {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--gray-500);
+            padding: 14px 16px 10px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gray-50);
+            white-space: nowrap;
+        }
+
+        .comp-table thead th:not(:first-child) {
+            text-align: right;
+        }
+
+        .comp-table tbody tr {
+            transition: all 0.2s ease;
+            cursor: default;
+        }
+
+        .comp-table tbody tr:hover {
+            background: rgba(59, 71, 217, 0.04);
+        }
+
+        .comp-table tbody tr:hover td {
+            color: var(--gray-900);
+        }
+
+        .comp-table tbody td {
+            padding: 14px 16px;
+            font-size: 0.88rem;
+            border-bottom: 1px solid var(--gray-100);
+            color: var(--gray-700);
+            white-space: nowrap;
+            transition: color 0.2s;
+        }
+
+        .comp-table tbody td:not(:first-child) {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Platform labels */
+        .platform-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.88rem;
+        }
+
+        .platform-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            transition: transform 0.2s;
+        }
+
+        tr:hover .platform-dot {
+            transform: scale(1.3);
+        }
+
+        .platform-bancoli .platform-dot {
+            background: var(--bancoli-green);
+        }
+
+        .platform-upwork .platform-dot {
+            background: var(--upwork-green);
+        }
+
+        .platform-deel .platform-dot {
+            background: var(--deel-blue);
+        }
+
+        .platform-payoneer .platform-dot {
+            background: var(--payoneer-orange);
+        }
+
+        .row-bancoli {
+            background: linear-gradient(90deg, rgba(232, 245, 212, 0.4) 0%, rgba(232, 245, 212, 0.15) 100%);
+        }
+
+        .row-bancoli td {
+            border-bottom: 2px solid rgba(140, 198, 63, 0.25) !important;
+        }
+
+        /* Loss/win badges */
+        .badge-win {
+            color: var(--win-green);
+            background: var(--win-green-bg);
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge-loss {
+            color: var(--loss-red);
+            background: var(--loss-red-bg);
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .badge-loss-med {
+            color: #c2410c;
+            background: var(--loss-orange-bg);
+            padding: 3px 10px;
+            border-radius: 100px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .val-green {
+            color: var(--bancoli-green-dark);
+            font-weight: 700;
+        }
+
+        .val-dim {
+            color: var(--gray-400);
+            font-size: 0.78rem;
+        }
+
+        /* ================================================
+           FEE BREAKDOWN LEGEND
+           ================================================ */
+        .fee-legend {
+            margin-top: 48px;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--gray-200);
+            overflow: hidden;
+        }
+
+        .fee-legend-header {
+            padding: 24px 28px;
+            background: var(--gray-50);
+            border-bottom: 1px solid var(--gray-200);
+        }
+
+        .fee-legend-header h3 {
+            font-family: 'Cardo', Georgia, serif;
+            font-size: 1.15rem;
+            color: var(--bancoli-navy);
+        }
+
+        .fee-legend-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0;
+        }
+
+        .fee-legend-card {
+            padding: 24px;
+            border-right: 1px solid var(--gray-100);
+            border-bottom: 1px solid var(--gray-100);
+        }
+
+        .fee-legend-card:nth-child(4n) {
+            border-right: none;
+        }
+
+        .fee-legend-card:nth-child(n+5) {
+            border-bottom: none;
+        }
+
+        .fee-legend-card .flc-platform {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            color: var(--gray-800);
+        }
+
+        .fee-legend-card .flc-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 0.82rem;
+        }
+
+        .fee-legend-card .flc-label {
+            color: var(--gray-500);
+        }
+
+        .fee-legend-card .flc-value {
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        /* ================================================
+           FOOTER CTA
+           ================================================ */
+        .footer-cta {
+            text-align: center;
+            padding: 60px 40px 48px;
+            background: var(--gray-50);
+            border-top: 1px solid var(--gray-200);
+        }
+
+        .footer-cta h2 {
+            font-family: 'Mulish', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 200;
+            color: #374151;
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .footer-cta h2 .accent {
+            font-family: 'Cardo', Georgia, serif;
+            color: var(--bancoli-blue);
+            font-style: italic;
+            font-weight: 400;
+        }
+
+        .footer-cta p {
+            color: var(--gray-500);
+            margin-bottom: 28px;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bancoli-green);
+            color: var(--bancoli-navy);
+            padding: 14px 36px;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 14px rgba(140, 198, 63, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--bancoli-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(140, 198, 63, 0.4);
+        }
+
+        .btn-primary svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .disclaimer {
+            text-align: center;
+            padding: 0 40px 40px;
+            font-size: 0.75rem;
+            color: var(--gray-400);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* ================================================
+           ANIMATIONS
+           ================================================ */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ================================================
+           RESPONSIVE
+           ================================================ */
+        @media (max-width: 1024px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 50px 24px 40px;
+                gap: 28px;
+            }
+
+            .hero-left {
+                max-width: 100%;
+            }
+
+            .hero-badge {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .fee-legend-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .fee-legend-card:nth-child(2n) {
+                border-right: none;
+            }
+
+            .fee-legend-card:nth-child(n+3) {
+                border-bottom: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 16px;
+                height: 56px;
+            }
+
+            .navbar-logo img {
+                height: 22px;
+            }
+
+            .navbar-cta {
+                padding: 6px 14px;
+                font-size: 0.8rem;
+            }
+
+            .hero {
+                padding: 36px 16px 32px;
+                gap: 20px;
+            }
+
+            .hero h1 {
+                font-size: 1.9rem;
+            }
+
+            .hero-description {
+                font-size: 0.95rem;
+            }
+
+            .calc-card {
+                width: 100%;
+                padding: 24px 20px;
+            }
+
+            .main-content {
+                padding: 0 12px;
+            }
+
+            .currency-header {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start;
+                padding: 16px 16px;
+            }
+
+            .currency-header .ch-rate {
+                text-align: left;
+            }
+
+            /* Stack table rows on mobile */
+            .comp-table thead {
+                display: none;
+            }
+
+            .comp-table,
+            .comp-table tbody,
+            .comp-table tr,
+            .comp-table td {
+                display: block;
+                width: 100%;
+            }
+
+            .comp-table tbody tr {
+                padding: 16px;
+                border-bottom: 1px solid var(--gray-200);
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px 12px;
+            }
+
+            .comp-table tbody tr:last-child {
+                border-bottom: none;
+            }
+
+            .comp-table tbody td {
+                padding: 0;
+                border-bottom: none;
+                white-space: normal;
+                text-align: left !important;
+            }
+
+            .comp-table tbody td:nth-child(1) {
+                grid-column: 1 / -1;
+                margin-bottom: 4px;
+            }
+
+            .comp-table tbody td:nth-child(2)::before {
+                content: 'Service fee: ';
+                font-weight: 400;
+                color: var(--gray-400);
+                font-size: 0.72rem;
+            }
+
+            .comp-table tbody td:nth-child(3)::before {
+                content: 'FX markup: ';
+                font-weight: 400;
+                color: var(--gray-400);
+                font-size: 0.72rem;
+            }
+
+            .comp-table tbody td:nth-child(4)::before {
+                content: 'Withdrawal: ';
+                font-weight: 400;
+                color: var(--gray-400);
+                font-size: 0.72rem;
+            }
+
+            .comp-table tbody td:nth-child(5)::before {
+                content: 'You receive: ';
+                font-weight: 400;
+                color: var(--gray-400);
+                font-size: 0.72rem;
+            }
+
+            .comp-table tbody td:nth-child(6)::before {
+                content: 'USD equiv.: ';
+                font-weight: 400;
+                color: var(--gray-400);
+                font-size: 0.72rem;
+            }
+
+            .comp-table tbody td:nth-child(7)::before {
+                content: 'Total lost: ';
+                font-weight: 400;
+                color: var(--gray-400);
+                font-size: 0.72rem;
+            }
+
+            .comp-table tbody td:nth-child(n+2) {
+                display: flex;
+                flex-direction: column;
+                font-size: 0.82rem;
+            }
+
+            .fee-legend-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .fee-legend-card {
+                border-right: none;
+                border-bottom: 1px solid var(--gray-100);
+            }
+
+            .fee-legend-card:last-child {
+                border-bottom: none;
+            }
+
+            .footer-cta {
+                padding: 40px 20px 48px;
+            }
+
+            .footer-cta h2 {
+                font-size: 1.3rem;
+            }
+
+            .disclaimer {
+                padding: 0 20px 32px;
+                font-size: 0.7rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar" id="navbar">
+        <a href="https://bancoli.com" class="navbar-logo" aria-label="Bancoli Home">
+            <img src="https://blog.bancoli.com/wp-content/uploads/2026/02/white_bancoli_logo.png" alt="Bancoli"
+                height="28" />
+        </a>
+        <a href="https://app.bancoli.com/sign-up" class="navbar-cta">Open account</a>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-left">
+            <div class="hero-badge">Freelancer FX calculator</div>
+            <h1>Keep <span class="accent">100%</span> of your money</h1>
+            <p class="hero-description">Stop paying hidden fees. With Bancoli, you can get the real mid-market rate.</p>
+            <p class="hero-currencies">Available for 25+ currencies.</p>
+        </div>
+
+        <div class="calc-card">
+            <span class="calc-field-label">Client pays you</span>
+            <div class="calc-input-row">
+                <input type="text" id="sendAmount" value="1,000" aria-label="Amount in USD" />
+                <span class="currency-badge">USD</span>
+            </div>
+
+            <button class="btn-calculate" id="btnCalculate" type="button">Calculate</button>
+
+            <p class="calc-meta">Rates sourced from interbank mid-market<br>Last updated: Feb 12, 2026 at 3:38 PM CST
+            </p>
+        </div>
+    </section>
+
+    <!-- SECTION DIVIDER -->
+    <div class="section-divider">
+        <h2>What you actually take home after platform fees</h2>
+        <p>Your client pays $1,000 USD. Here is how much actually lands in your bank account across Upwork, Deel,
+            Payoneer, and Bancoli.</p>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="main-content">
+        <div id="currencyResults"></div>
+
+        <!-- FEE LEGEND -->
+        <div class="fee-legend">
+            <div class="fee-legend-header">
+                <h3>How we calculated each platform</h3>
+            </div>
+            <div class="fee-legend-grid">
+                <div class="fee-legend-card">
+                    <div class="flc-platform">
+                        <span class="platform-dot" style="background: var(--bancoli-green);"></span>
+                        Bancoli
+                    </div>
+                    <div class="flc-row"><span class="flc-label">Service fee</span><span class="flc-value">0%</span>
+                    </div>
+                    <div class="flc-row"><span class="flc-label">FX markup</span><span class="flc-value">0% (interbank
+                            rate)</span></div>
+                    <div class="flc-row"><span class="flc-label">Withdrawal</span><span class="flc-value">$0</span>
+                    </div>
+                </div>
+                <div class="fee-legend-card">
+                    <div class="flc-platform">
+                        <span class="platform-dot" style="background: var(--upwork-green);"></span>
+                        Upwork
+                    </div>
+                    <div class="flc-row"><span class="flc-label">Service fee</span><span class="flc-value">10%</span>
+                    </div>
+                    <div class="flc-row"><span class="flc-label">FX markup</span><span class="flc-value">~2.5% above
+                            mid-market</span></div>
+                    <div class="flc-row"><span class="flc-label">Withdrawal</span><span class="flc-value">$0.99 (local
+                            bank)</span></div>
+                </div>
+                <div class="fee-legend-card">
+                    <div class="flc-platform">
+                        <span class="platform-dot" style="background: var(--deel-blue);"></span>
+                        Deel
+                    </div>
+                    <div class="flc-row"><span class="flc-label">Service fee</span><span class="flc-value">0%</span>
+                    </div>
+                    <div class="flc-row"><span class="flc-label">FX markup</span><span class="flc-value">~2% (forward
+                            rate)</span></div>
+                    <div class="flc-row"><span class="flc-label">Withdrawal</span><span class="flc-value">$5 (local
+                            bank)</span></div>
+                </div>
+                <div class="fee-legend-card">
+                    <div class="flc-platform">
+                        <span class="platform-dot" style="background: var(--payoneer-orange);"></span>
+                        Payoneer
+                    </div>
+                    <div class="flc-row"><span class="flc-label">Service fee</span><span class="flc-value">0%</span>
+                    </div>
+                    <div class="flc-row"><span class="flc-label">FX markup</span><span class="flc-value">3% above
+                            mid-market</span></div>
+                    <div class="flc-row"><span class="flc-label">Withdrawal</span><span class="flc-value">$0 (local
+                            bank)</span></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER CTA -->
+    <section class="footer-cta">
+        <h2>Stop losing money on <span class="accent">every payment</span></h2>
+        <p>Join thousands of freelancers keeping 100% of their earnings with Bancoli Zero FX.</p>
+        <a href="https://app.bancoli.com/sign-up" class="btn-primary" id="ctaButton">
+            Start transfer
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+            </svg>
+        </a>
+    </section>
+
+    <p class="disclaimer">
+        Exchange rates shown are interbank mid-market rates. Last updated: Feb 12, 2026 at 3:38 PM CST. Actual rates may
+        vary.
+        Upwork service fee shown is the standard 10% as of May 2025 (new contracts may vary 0-15%).
+        Deel FX markup is estimated at ~2% based on their institutional forward rate policy.
+        Payoneer FX markup is 3% for local currency withdrawals as of March 2025.
+        Bancoli offers Zero FX fees on supported currency corridors. This is a comparison for illustration purposes.
+    </p>
+
+    <script>
+        // ---- DATA ----
+        const CURRENCIES = [
+            { code: 'MXN', name: 'Mexican Peso', full: 'USD to MXN', rate: 17.1760 },
+            { code: 'BRL', name: 'Brazilian Real', full: 'USD to BRL', rate: 5.1750 },
+            { code: 'INR', name: 'Indian Rupee', full: 'USD to INR', rate: 90.5230 },
+            { code: 'PHP', name: 'Philippine Peso', full: 'USD to PHP', rate: 58.0850 }
+        ];
+
+        // Platform configs: serviceFee (% of gross), fxMarkup (% above mid-market), withdrawalFlat ($)
+        const PLATFORMS = [
+            { id: 'bancoli', name: 'Bancoli (0% FX)', serviceFee: 0, fxMarkup: 0, withdrawalFlat: 0, cssClass: 'platform-bancoli', isWinner: true },
+            { id: 'upwork', name: 'Upwork', serviceFee: 0.10, fxMarkup: 0.025, withdrawalFlat: 0.99, cssClass: 'platform-upwork', isWinner: false },
+            { id: 'deel', name: 'Deel', serviceFee: 0, fxMarkup: 0.02, withdrawalFlat: 5, cssClass: 'platform-deel', isWinner: false },
+            { id: 'payoneer', name: 'Payoneer', serviceFee: 0, fxMarkup: 0.03, withdrawalFlat: 0, cssClass: 'platform-payoneer', isWinner: false }
+        ];
+
+        // ---- HELPERS ----
+        function parseAmount(str) {
+            return parseFloat(str.replace(/,/g, '')) || 0;
+        }
+
+        function fmt(n) {
+            return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        function fmtRate(rate) {
+            return rate.toFixed(4);
+        }
+
+        // ---- RENDERING ----
+        function render() {
+            const grossUSD = parseAmount(document.getElementById('sendAmount').value);
+            const container = document.getElementById('currencyResults');
+            let html = '';
+
+            CURRENCIES.forEach(cur => {
+                const bancoliLocal = grossUSD * cur.rate;
+
+                let rowsHTML = '';
+                PLATFORMS.forEach(p => {
+                    // 1. Service fee (deducted from gross in USD)
+                    const afterService = grossUSD * (1 - p.serviceFee);
+                    const serviceFeeUSD = grossUSD * p.serviceFee;
+
+                    // 2. Withdrawal flat fee (deducted in USD before conversion)
+                    const afterWithdrawal = Math.max(afterService - p.withdrawalFlat, 0);
+
+                    // 3. FX conversion: effective rate = mid-market * (1 - markup)
+                    const effectiveRate = cur.rate * (1 - p.fxMarkup);
+                    const receivedLocal = afterWithdrawal * effectiveRate;
+
+                    // USD equivalent of what was received
+                    const receivedUSDEquiv = receivedLocal / cur.rate;
+                    const totalLostUSD = grossUSD - receivedUSDEquiv;
+
+                    const rowClass = p.isWinner ? 'row-bancoli' : '';
+                    const deliveredClass = p.isWinner ? 'val-green' : '';
+
+                    let lostBadge;
+                    if (totalLostUSD < 0.01) {
+                        lostBadge = '<span class="badge-win">$0.00</span>';
+                    } else if (totalLostUSD < 50) {
+                        lostBadge = `<span class="badge-loss-med">-$${fmt(totalLostUSD)}</span>`;
+                    } else {
+                        lostBadge = `<span class="badge-loss">-$${fmt(totalLostUSD)}</span>`;
+                    }
+
+                    rowsHTML += `
+                    <tr class="${rowClass}">
+                      <td>
+                        <span class="platform-label ${p.cssClass}">
+                          <span class="platform-dot"></span>
+                          ${p.name}
+                        </span>
+                      </td>
+                      <td>${p.serviceFee > 0 ? '-$' + fmt(serviceFeeUSD) : '$0.00'}</td>
+                      <td>${p.fxMarkup > 0 ? (p.fxMarkup * 100).toFixed(1) + '%' : '0%'} <span class="val-dim">(${fmtRate(effectiveRate)})</span></td>
+                      <td>${p.withdrawalFlat > 0 ? '-$' + fmt(p.withdrawalFlat) : '$0.00'}</td>
+                      <td class="${deliveredClass}">${fmt(receivedLocal)} ${cur.code}</td>
+                      <td class="${deliveredClass}">$${fmt(receivedUSDEquiv)}</td>
+                      <td>${lostBadge}</td>
+                    </tr>`;
+                });
+
+                html += `
+                <div class="currency-section">
+                  <div class="currency-header">
+                    <div>
+                      <div class="ch-name">USD &rarr; ${cur.code}</div>
+                      <div class="ch-full">${cur.name}</div>
+                    </div>
+                    <div class="ch-rate">
+                      <div class="ch-rate-label">Interbank Rate</div>
+                      <div class="ch-rate-value">1 USD = ${fmtRate(cur.rate)} ${cur.code}</div>
+                    </div>
+                  </div>
+                  <div class="comp-table-wrap">
+                    <table class="comp-table">
+                      <thead>
+                        <tr>
+                          <th>Platform</th>
+                          <th>Service Fee</th>
+                          <th>FX Markup (Rate)</th>
+                          <th>Withdrawal Fee</th>
+                          <th>You Receive</th>
+                          <th>USD Equivalent</th>
+                          <th>Total Lost</th>
+                        </tr>
+                      </thead>
+                      <tbody>${rowsHTML}</tbody>
+                    </table>
+                  </div>
+                </div>`;
+            });
+
+            container.innerHTML = html;
+
+            // Update section divider text
+            const dividerP = document.querySelector('.section-divider p');
+            if (dividerP) {
+                dividerP.textContent = `Your client pays $${fmt(grossUSD)} USD. Here is how much actually lands in your bank account across Upwork, Deel, Payoneer, and Bancoli.`;
+            }
+        }
+
+        // ---- INPUT FORMATTING ----
+        const amountInput = document.getElementById('sendAmount');
+
+        amountInput.addEventListener('input', () => {
+            let raw = amountInput.value.replace(/[^0-9.]/g, '');
+            const parts = raw.split('.');
+            if (parts.length > 2) raw = parts[0] + '.' + parts.slice(1).join('');
+
+            const num = parseFloat(raw);
+            if (!isNaN(num)) {
+                const intPart = Math.floor(num).toLocaleString('en-US');
+                const decPart = raw.includes('.') ? '.' + (parts[1] || '') : '';
+                amountInput.value = intPart + decPart;
+            } else if (raw === '' || raw === '.') {
+                amountInput.value = raw;
+            }
+        });
+
+        document.getElementById('btnCalculate').addEventListener('click', () => { render(); });
+        amountInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') { e.preventDefault(); render(); } });
+
+        // ---- INITIAL RENDER ----
+        render();
+    </script>
+</body>
+
+</html>
