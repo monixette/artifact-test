@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zero FX | See What You Lose on Every Conversion</title>
+    <meta name="description"
+        content="Compare interbank exchange rates with typical bank FX fees of 2%, 3%, and 4%. See how much money is actually delivered after conversion." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cardo:ital,wght@0,400;0,700;1,400&family=Mulish:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <style>
+        /* ================================================
+       DESIGN SYSTEM
+       ================================================ */
+        :root {
+            /* Bancoli-inspired palette */
+            --bancoli-navy: #1a1f4e;
+            --bancoli-navy-light: #252a6a;
+            --bancoli-blue: #3b47d9;
+            --bancoli-indigo: #5b5fc7;
+            --bancoli-green: #8cc63f;
+            --bancoli-green-dark: #6fa830;
+            --bancoli-green-light: #e8f5d4;
+
+            /* Neutrals */
+            --white: #ffffff;
+            --gray-50: #f9fafb;
+            --gray-100: #f3f4f6;
+            --gray-200: #e5e7eb;
+            --gray-300: #d1d5db;
+            --gray-400: #9ca3af;
+            --gray-500: #6b7280;
+            --gray-600: #4b5563;
+            --gray-700: #374151;
+            --gray-800: #1f2937;
+            --gray-900: #111827;
+
+            /* Semantic */
+            --loss-red: #ef4444;
+            --loss-red-bg: #fef2f2;
+            --loss-orange: #f97316;
+            --loss-orange-bg: #fff7ed;
+            --loss-yellow: #eab308;
+            --loss-yellow-bg: #fefce8;
+            --win-green: #22c55e;
+            --win-green-bg: #f0fdf4;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 25px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+            --shadow-xl: 0 20px 40px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+
+            /* Border radius */
+            --radius-sm: 6px;
+            --radius-md: 10px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+        }
+
+        /* ================================================
+       RESET & BASE
+       ================================================ */
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Mulish', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--gray-50);
+            color: var(--gray-800);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .navbar-logo,
+        .pair-label .pair-name,
+        .interbank-rate .rate-value {
+            font-family: 'Cardo', Georgia, 'Times New Roman', serif;
+        }
+
+        /* ================================================
+       NAVBAR
+       ================================================ */
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--bancoli-navy);
+            padding: 0 40px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 12px rgba(26, 31, 78, 0.25);
+        }
+
+        .navbar-logo {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: -0.02em;
+            text-decoration: none;
+        }
+
+        .navbar-logo span {
+            color: var(--bancoli-green);
+        }
+
+        .navbar-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .navbar-links a {
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .navbar-links a:hover {
+            color: var(--white);
+        }
+
+        .navbar-cta {
+            background: transparent;
+            border: 1.5px solid var(--bancoli-green);
+            color: var(--bancoli-green) !important;
+            padding: 8px 20px;
+            border-radius: 6px;
+            transition: all 0.25s !important;
+        }
+
+        .navbar-cta:hover {
+            background: var(--bancoli-green) !important;
+            color: var(--bancoli-navy) !important;
+        }
+
+        /* ================================================
+       HERO SECTION
+       ================================================ */
+        .hero {
+            background: linear-gradient(135deg, var(--bancoli-navy) 0%, var(--bancoli-navy-light) 50%, #2d347a 100%);
+            padding: 80px 40px 100px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(140, 198, 63, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -150px;
+            left: -150px;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(59, 71, 217, 0.12) 0%, transparent 70%);
+            pointer-events: none;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(140, 198, 63, 0.12);
+            border: 1px solid rgba(140, 198, 63, 0.25);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--bancoli-green);
+            margin-bottom: 24px;
+            animation: fadeInDown 0.6s ease;
+        }
+
+        .hero-badge::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--bancoli-green);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+
+            50% {
+                opacity: 0.5;
+                transform: scale(1.4);
+            }
+        }
+
+        .hero h1 {
+            font-size: 3.2rem;
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1.15;
+            margin-bottom: 16px;
+            letter-spacing: -0.03em;
+            animation: fadeInUp 0.6s ease 0.1s both;
+        }
+
+        .hero h1 .green {
+            color: var(--bancoli-green);
+        }
+
+        .hero p {
+            font-size: 1.15rem;
+            color: rgba(255, 255, 255, 0.7);
+            max-width: 640px;
+            margin: 0 auto 40px;
+            font-weight: 400;
+            animation: fadeInUp 0.6s ease 0.2s both;
+        }
+
+        /* ================================================
+       AMOUNT INPUT
+       ================================================ */
+        .amount-controller {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 12px;
+            animation: fadeInUp 0.6s ease 0.3s both;
+            flex-wrap: wrap;
+        }
+
+        .amount-controller label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .amount-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .amount-input-wrapper .currency-tag {
+            position: absolute;
+            left: 14px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--bancoli-navy);
+            background: var(--bancoli-green);
+            padding: 2px 8px;
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        #sendAmount {
+            width: 220px;
+            padding: 14px 16px 14px 62px;
+            font-size: 1.15rem;
+            font-weight: 600;
+            border: 2px solid rgba(140, 198, 63, 0.3);
+            border-radius: var(--radius-md);
+            background: rgba(255, 255, 255, 0.08);
+            color: var(--white);
+            outline: none;
+            transition: all 0.25s;
+            font-family: 'Mulish', sans-serif;
+        }
+
+        #sendAmount:focus {
+            border-color: var(--bancoli-green);
+            background: rgba(255, 255, 255, 0.12);
+            box-shadow: 0 0 0 4px rgba(140, 198, 63, 0.15);
+        }
+
+        .hero-subtitle {
+            font-size: 0.82rem;
+            color: rgba(255, 255, 255, 0.45);
+            animation: fadeInUp 0.6s ease 0.35s both;
+        }
+
+        /* ================================================
+       MAIN CONTENT
+       ================================================ */
+        .main-content {
+            max-width: 1280px;
+            margin: -60px auto 60px;
+            padding: 0 24px;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* ================================================
+       PAIR CARDS
+       ================================================ */
+        .pair-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .pair-card:last-child:nth-child(odd) {
+            grid-column: 1 / -1;
+            max-width: 50%;
+            justify-self: center;
+        }
+
+        .pair-card {
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: fadeInUp 0.5s ease both;
+            border: 1px solid var(--gray-200);
+            min-width: 0;
+        }
+
+        .pair-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-xl);
+            border-color: rgba(59, 71, 217, 0.15);
+        }
+
+        .pair-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .pair-card:nth-child(2) {
+            animation-delay: 0.15s;
+        }
+
+        .pair-card:nth-child(3) {
+            animation-delay: 0.2s;
+        }
+
+        .pair-card:nth-child(4) {
+            animation-delay: 0.25s;
+        }
+
+        .pair-card:nth-child(5) {
+            animation-delay: 0.3s;
+        }
+
+        .pair-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 20px 24px;
+            background: linear-gradient(135deg, var(--bancoli-navy), var(--bancoli-navy-light));
+        }
+
+        .pair-info {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .flag-pair {
+            display: flex;
+            align-items: center;
+        }
+
+        .flag {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            border: 2px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .flag:last-child {
+            margin-left: -8px;
+            border-color: var(--bancoli-green);
+        }
+
+        .pair-label {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pair-label .pair-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: -0.01em;
+        }
+
+        .pair-label .pair-full {
+            font-size: 0.75rem;
+            color: rgba(255, 255, 255, 0.5);
+            font-weight: 400;
+        }
+
+        .interbank-rate {
+            text-align: right;
+        }
+
+        .interbank-rate .rate-label {
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--bancoli-green);
+            margin-bottom: 2px;
+        }
+
+        .interbank-rate .rate-value {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--white);
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Table */
+        .pair-table-wrapper {
+            padding: 0;
+        }
+
+        .pair-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .pair-table thead th {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--gray-500);
+            padding: 12px 12px 8px;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200);
+            background: var(--gray-50);
+            white-space: nowrap;
+        }
+
+        .pair-table thead th:last-child,
+        .pair-table thead th:nth-child(3),
+        .pair-table thead th:nth-child(4) {
+            text-align: right;
+        }
+
+        .pair-table tbody tr {
+            transition: background 0.2s;
+        }
+
+        .pair-table tbody tr:hover {
+            background: var(--gray-50);
+        }
+
+        .pair-table tbody td {
+            padding: 12px 12px;
+            font-size: 0.84rem;
+            border-bottom: 1px solid var(--gray-100);
+            color: var(--gray-700);
+            white-space: nowrap;
+        }
+
+        .pair-table tbody td:last-child,
+        .pair-table tbody td:nth-child(3),
+        .pair-table tbody td:nth-child(4) {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        /* Scenario label styles */
+        .scenario-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            font-size: 0.82rem;
+        }
+
+        .scenario-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .scenario-bancoli .scenario-dot {
+            background: var(--bancoli-green);
+        }
+
+        .scenario-2 .scenario-dot {
+            background: var(--loss-yellow);
+        }
+
+        .scenario-3 .scenario-dot {
+            background: var(--loss-orange);
+        }
+
+        .scenario-4 .scenario-dot {
+            background: var(--loss-red);
+        }
+
+        /* Rate adjusted */
+        .rate-adj {
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* Delivered amount */
+        .delivered {
+            font-weight: 700;
+            font-size: 0.95rem;
+        }
+
+        .delivered-bancoli {
+            color: var(--bancoli-green-dark);
+        }
+
+        /* Money lost */
+        .money-lost {
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .loss-zero {
+            color: var(--win-green);
+            background: var(--win-green-bg);
+            padding: 3px 8px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .loss-low {
+            color: #b45309;
+            background: var(--loss-yellow-bg);
+            padding: 3px 8px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .loss-med {
+            color: #c2410c;
+            background: var(--loss-orange-bg);
+            padding: 3px 8px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        .loss-high {
+            color: #dc2626;
+            background: var(--loss-red-bg);
+            padding: 3px 8px;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            white-space: nowrap;
+        }
+
+        /* Bancoli row highlight */
+        .row-bancoli {
+            background: linear-gradient(90deg, rgba(232, 245, 212, 0.4) 0%, rgba(232, 245, 212, 0.15) 100%);
+        }
+
+        .row-bancoli td {
+            border-bottom: 2px solid rgba(140, 198, 63, 0.25) !important;
+        }
+
+        /* ================================================
+       SUMMARY SECTION
+       ================================================ */
+        .summary-section {
+            margin-top: 48px;
+            background: var(--white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+            border: 1px solid var(--gray-200);
+            animation: fadeInUp 0.6s ease 0.4s both;
+        }
+
+        .summary-header {
+            padding: 28px 32px;
+            background: linear-gradient(135deg, var(--bancoli-navy), var(--bancoli-navy-light));
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .summary-header h2 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        .summary-header .savings-badge {
+            background: var(--bancoli-green);
+            color: var(--bancoli-navy);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .summary-table thead th {
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--gray-500);
+            padding: 16px 20px 12px;
+            text-align: left;
+            border-bottom: 2px solid var(--gray-200);
+            background: var(--gray-50);
+        }
+
+        .summary-table thead th:not(:first-child) {
+            text-align: right;
+        }
+
+        .summary-table tbody td {
+            padding: 16px 20px;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--gray-100);
+            color: var(--gray-700);
+        }
+
+        .summary-table tbody td:not(:first-child) {
+            text-align: right;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .summary-table tbody tr:hover {
+            background: var(--gray-50);
+        }
+
+        .summary-table .total-row {
+            background: var(--gray-50);
+            font-weight: 700;
+        }
+
+        .summary-table .total-row td {
+            border-top: 2px solid var(--gray-300);
+            padding-top: 18px;
+            padding-bottom: 18px;
+            font-size: 0.95rem;
+        }
+
+        /* ================================================
+       FOOTER CTA
+       ================================================ */
+        .footer-cta {
+            text-align: center;
+            padding: 60px 40px 80px;
+        }
+
+        .footer-cta h2 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--bancoli-navy);
+            margin-bottom: 12px;
+            letter-spacing: -0.02em;
+        }
+
+        .footer-cta h2 .green {
+            color: var(--bancoli-green-dark);
+        }
+
+        .footer-cta p {
+            color: var(--gray-500);
+            margin-bottom: 28px;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bancoli-green);
+            color: var(--bancoli-navy);
+            padding: 14px 36px;
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s;
+            box-shadow: 0 4px 14px rgba(140, 198, 63, 0.3);
+        }
+
+        .btn-primary:hover {
+            background: var(--bancoli-green-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(140, 198, 63, 0.4);
+        }
+
+        .btn-primary svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ================================================
+       DISCLAIMER
+       ================================================ */
+        .disclaimer {
+            text-align: center;
+            padding: 0 40px 40px;
+            font-size: 0.75rem;
+            color: var(--gray-400);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        /* ================================================
+       ANIMATIONS
+       ================================================ */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ================================================
+       RESPONSIVE
+       ================================================ */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .navbar-links {
+                display: none;
+            }
+
+            .hero {
+                padding: 50px 20px 80px;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero p {
+                font-size: 1rem;
+            }
+
+            .main-content {
+                padding: 0 12px;
+                margin-top: -40px;
+            }
+
+            .pair-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .pair-card:last-child:nth-child(odd) {
+                max-width: 100%;
+            }
+
+            .pair-card-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+
+            .interbank-rate {
+                text-align: left;
+            }
+
+            .pair-table thead th,
+            .pair-table tbody td {
+                padding: 10px 10px;
+                font-size: 0.78rem;
+            }
+
+            .summary-header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
+
+            .summary-table thead th,
+            .summary-table tbody td {
+                padding: 12px 10px;
+                font-size: 0.8rem;
+            }
+
+            .footer-cta h2 {
+                font-size: 1.4rem;
+            }
+
+            .amount-controller {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar" id="navbar">
+        <a href="https://bancoli.com" class="navbar-logo" aria-label="Bancoli Home">
+            <img src="white_bancoli_logo.png" alt="Bancoli" height="28" />
+        </a>
+        <div class="navbar-links">
+            <a href="https://app.bancoli.com/sign-up" class="navbar-cta">Open account</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="hero">
+        <div class="hero-badge">Live interbank rates</div>
+        <h1>Keep <span class="green">100%</span> of your money</h1>
+        <p>See exactly how much you lose with every currency conversion. Stop paying hidden FX fees — get the real
+            mid-market rate with Bancoli.</p>
+
+        <div class="amount-controller">
+            <label for="sendAmount">You send</label>
+            <div class="amount-input-wrapper">
+                <span class="currency-tag">USD</span>
+                <input type="text" id="sendAmount" value="10,000" aria-label="Amount in USD" />
+            </div>
+        </div>
+        <p class="hero-subtitle">Rates sourced from interbank mid-market · Last updated: Feb 12, 2026 at 1:30 PM CST</p>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content" id="main-content">
+
+        <!-- PAIR CARDS -->
+        <div class="pair-grid" id="pairGrid">
+            <!-- Cards generated by JS -->
+        </div>
+
+        <!-- SUMMARY TABLE -->
+        <section class="summary-section" id="summarySection">
+            <div class="summary-header">
+                <h2>💰 Total Savings Summary</h2>
+                <span class="savings-badge" id="summaryBadge">Across all 5 pairs · Feb 12, 2026 · 1:30 PM CST</span>
+            </div>
+            <table class="summary-table" id="summaryTable">
+                <thead>
+                    <tr>
+                        <th>Currency Pair</th>
+                        <th>Interbank Rate</th>
+                        <th>Bancoli Delivered (0% FX)</th>
+                        <th>Lost at 2% FX</th>
+                        <th>Lost at 3% FX</th>
+                        <th>Lost at 4% FX</th>
+                    </tr>
+                </thead>
+                <tbody id="summaryBody">
+                    <!-- Generated by JS -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- FOOTER CTA -->
+    <section class="footer-cta">
+        <h2>Stop losing money on <span class="green">every transfer</span></h2>
+        <p>Join thousands of businesses keeping 100% of their money with Bancoli's Zero FX.</p>
+        <a href="https://staging-home.bancoli.com/features/zero-fx" class="btn-primary" id="ctaButton">
+            Start transfer
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+                stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12" />
+                <polyline points="12 5 19 12 12 19" />
+            </svg>
+        </a>
+    </section>
+
+    <p class="disclaimer">
+        Exchange rates shown are interbank mid-market rates. Last updated: Feb 12, 2026 at 1:30 PM CST. Actual rates may
+        vary.
+        FX fees of 2%, 3%, and 4% represent typical markups charged by banks and traditional providers.
+        Bancoli offers Zero FX fees on supported currency corridors. This is a comparison mockup for illustration
+        purposes.
+    </p>
+
+    <!-- ================================================
+       JAVASCRIPT
+       ================================================ -->
+    <script>
+        // ---- DATA ----
+        const PAIRS = [
+            {
+                from: 'USD', to: 'EUR',
+                fromFlag: '🇺🇸', toFlag: '🇪🇺',
+                fromFull: 'US Dollar', toFull: 'Euro',
+                rate: 0.8424
+            },
+            {
+                from: 'USD', to: 'MXN',
+                fromFlag: '🇺🇸', toFlag: '🇲🇽',
+                fromFull: 'US Dollar', toFull: 'Mexican Peso',
+                rate: 17.2700
+            },
+            {
+                from: 'USD', to: 'GBP',
+                fromFlag: '🇺🇸', toFlag: '🇬🇧',
+                fromFull: 'US Dollar', toFull: 'British Pound',
+                rate: 0.7308
+            },
+            {
+                from: 'USD', to: 'BRL',
+                fromFlag: '🇺🇸', toFlag: '🇧🇷',
+                fromFull: 'US Dollar', toFull: 'Brazilian Real',
+                rate: 5.1738
+            },
+            {
+                from: 'USD', to: 'INR',
+                fromFlag: '🇺🇸', toFlag: '🇮🇳',
+                fromFull: 'US Dollar', toFull: 'Indian Rupee',
+                rate: 90.6025
+            }
+        ];
+
+        const FEE_TIERS = [0, 0.02, 0.03, 0.04]; // 0% (Bancoli), 2%, 3%, 4%
+
+        // ---- HELPERS ----
+        function parseAmount(str) {
+            return parseFloat(str.replace(/,/g, '')) || 0;
+        }
+
+        function formatNumber(n, decimals = 2) {
+            return n.toLocaleString('en-US', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
+        }
+
+        function formatRate(rate, currency) {
+            // For currencies with large values (MXN, BRL, INR) show 4 decimals, else 4
+            return rate.toFixed(4);
+        }
+
+        function getLossClass(fee) {
+            if (fee === 0) return 'loss-zero';
+            if (fee === 0.02) return 'loss-low';
+            if (fee === 0.03) return 'loss-med';
+            return 'loss-high';
+        }
+
+        function getScenarioClass(fee) {
+            if (fee === 0) return 'scenario-bancoli';
+            if (fee === 0.02) return 'scenario-2';
+            if (fee === 0.03) return 'scenario-3';
+            return 'scenario-4';
+        }
+
+        function getScenarioLabel(fee) {
+            if (fee === 0) return 'Bancoli (0% FX)';
+            return `${(fee * 100).toFixed(0)}% FX Fee`;
+        }
+
+        // ---- RENDERING ----
+        function render() {
+            const amount = parseAmount(document.getElementById('sendAmount').value);
+            const grid = document.getElementById('pairGrid');
+            const summaryBody = document.getElementById('summaryBody');
+
+            let cardHTML = '';
+            let summaryHTML = '';
+            let totalLoss2 = 0, totalLoss3 = 0, totalLoss4 = 0;
+
+            PAIRS.forEach((pair) => {
+                const bancoliDelivered = amount * pair.rate;
+
+                // Build rows
+                let rowsHTML = '';
+                FEE_TIERS.forEach(fee => {
+                    const effectiveAmount = amount * (1 - fee);
+                    const delivered = effectiveAmount * pair.rate;
+                    const lost = bancoliDelivered - delivered;
+                    const lostUSD = amount * fee;
+
+                    const isBancoli = fee === 0;
+                    const rowClass = isBancoli ? 'row-bancoli' : '';
+                    const deliveredClass = isBancoli ? 'delivered-bancoli' : '';
+                    const lossClass = getLossClass(fee);
+                    const scenarioClass = getScenarioClass(fee);
+
+                    const lossDisplay = isBancoli
+                        ? `<span class="${lossClass}">0.00 ${pair.to}</span>`
+                        : `<span class="${lossClass}">-${formatNumber(lost)} ${pair.to}</span>`;
+
+                    rowsHTML += `
+            <tr class="${rowClass}">
+              <td>
+                <span class="scenario-label ${scenarioClass}">
+                  <span class="scenario-dot"></span>
+                  ${getScenarioLabel(fee)}
+                </span>
+              </td>
+              <td class="rate-adj">${formatRate(pair.rate * (1 - fee), pair.to)}</td>
+              <td class="delivered ${deliveredClass}">${formatNumber(delivered)} ${pair.to}</td>
+              <td class="money-lost">${lossDisplay}</td>
+            </tr>
+          `;
+                });
+
+                cardHTML += `
+          <div class="pair-card">
+            <div class="pair-card-header">
+              <div class="pair-info">
+                <div class="pair-label">
+                  <span class="pair-name">${pair.from} → ${pair.to}</span>
+                  <span class="pair-full">${pair.fromFull} to ${pair.toFull}</span>
+                </div>
+              </div>
+              <div class="interbank-rate">
+                <div class="rate-label">Interbank Rate</div>
+                <div class="rate-value">1 USD = ${formatRate(pair.rate, pair.to)} ${pair.to}</div>
+              </div>
+            </div>
+            <div class="pair-table-wrapper">
+              <table class="pair-table">
+                <thead>
+                  <tr>
+                    <th>Scenario</th>
+                    <th>Effective Rate</th>
+                    <th>Delivered</th>
+                    <th>Lost to FX</th>
+                  </tr>
+                </thead>
+                <tbody>${rowsHTML}</tbody>
+              </table>
+            </div>
+          </div>
+        `;
+
+                // Summary row
+                const del2 = amount * (1 - 0.02) * pair.rate;
+                const del3 = amount * (1 - 0.03) * pair.rate;
+                const del4 = amount * (1 - 0.04) * pair.rate;
+                const loss2 = bancoliDelivered - del2;
+                const loss3 = bancoliDelivered - del3;
+                const loss4 = bancoliDelivered - del4;
+                totalLoss2 += amount * 0.02;
+                totalLoss3 += amount * 0.03;
+                totalLoss4 += amount * 0.04;
+
+                summaryHTML += `
+          <tr>
+            <td><strong>${pair.from} → ${pair.to}</strong></td>
+            <td>${formatRate(pair.rate, pair.to)}</td>
+            <td style="color: var(--bancoli-green-dark); font-weight: 700;">${formatNumber(bancoliDelivered)} ${pair.to}</td>
+            <td><span class="loss-low">-${formatNumber(loss2)} ${pair.to}</span></td>
+            <td><span class="loss-med">-${formatNumber(loss3)} ${pair.to}</span></td>
+            <td><span class="loss-high">-${formatNumber(loss4)} ${pair.to}</span></td>
+          </tr>
+        `;
+            });
+
+            grid.innerHTML = cardHTML;
+            summaryBody.innerHTML = summaryHTML;
+        }
+
+        // ---- INPUT FORMATTING ----
+        const amountInput = document.getElementById('sendAmount');
+
+        amountInput.addEventListener('input', () => {
+            // Strip non-numeric chars except period
+            let raw = amountInput.value.replace(/[^0-9.]/g, '');
+            // Limit to one decimal point
+            const parts = raw.split('.');
+            if (parts.length > 2) raw = parts[0] + '.' + parts.slice(1).join('');
+
+            // Format with commas
+            const num = parseFloat(raw);
+            if (!isNaN(num)) {
+                const intPart = Math.floor(num).toLocaleString('en-US');
+                const decPart = raw.includes('.') ? '.' + (parts[1] || '') : '';
+                amountInput.value = intPart + decPart;
+            } else if (raw === '' || raw === '.') {
+                amountInput.value = raw;
+            }
+
+            render();
+        });
+
+        // ---- INITIAL RENDER ----
+        render();
+    </script>
+</body>
+
+</html>
