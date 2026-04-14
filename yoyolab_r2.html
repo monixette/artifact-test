@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico: Fase de Sistematización</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(240, 147, 251, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        
+        .diagnostic-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        
+        .diagnostic-box h2 {
+            color: #f5576c;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #f5576c;
+        }
+        
+        .diagnostic-box h3 {
+            color: #333;
+            font-size: 1.4rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .diagnostic-box p {
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+        
+        .diagnostic-box ul {
+            margin: 20px 0;
+            padding-left: 0;
+            list-style: none;
+        }
+        
+        .diagnostic-box li {
+            padding: 12px 0 12px 30px;
+            position: relative;
+            color: #444;
+        }
+        
+        .diagnostic-box li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #f5576c;
+            font-weight: bold;
+        }
+        
+        .alert-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 6px;
+        }
+        
+        .alert-box strong {
+            color: #856404;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .insight-box {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 6px;
+        }
+        
+        .insight-box strong {
+            color: #1565c0;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .next-steps {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 6px;
+        }
+        
+        .next-steps h3 {
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .cta-box {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .cta-box h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .cta-box p {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #f5576c;
+            padding: 15px 40px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .metric-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ff9800;
+        }
+        
+        .metric-card strong {
+            display: block;
+            color: #ff9800;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+        
+        .comparison-table {
+            margin: 30px 0;
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .comparison-table th,
+        .comparison-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .comparison-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .comparison-table .current {
+            color: #ff9800;
+            font-weight: 500;
+        }
+        
+        .comparison-table .target {
+            color: #4caf50;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Fase de Sistematización</h1>
+            <p class="subtitle">Tienes tracción, pero dependes demasiado de improvisación</p>
+        </div>
+        
+        <div class="diagnostic-box">
+            <h2>Diagnóstico: Estado Actual</h2>
+            
+            <div class="alert-box">
+                <strong>Situación detectada:</strong>
+                Tu negocio vende, pero de forma inestable. Cada mes es una montaña rusa. Sabes qué funciona en general, pero no puedes predecir resultados ni escalar sin agregar más caos. El problema no es capacidad: es dependencia de esfuerzo heroico.
+            </div>
+            
+            <h3>Indicadores detectados:</h3>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <strong>Ventas inconsistentes</strong>
+                    <p>Algunos meses bien, otros preocupantes</p>
+                </div>
+                <div class="metric-card">
+                    <strong>Leads que se enfrían</strong>
+                    <p>Interés inicial que no convierte consistentemente</p>
+                </div>
+                <div class="metric-card">
+                    <strong>Oferta en evolución</strong>
+                    <p>Tienes una principal, pero aún poco clara</p>
+                </div>
+                <div class="metric-card">
+                    <strong>Canales dispersos</strong>
+                    <p>Funcionan, pero no están optimizados ni alineados</p>
+                </div>
+            </div>
+            
+            <h3>Qué está pasando realmente:</h3>
+            <p>Has validado que tu oferta resuelve algo valioso, pero no has construido el sistema que convierte esa validación en resultados predecibles. Estás en la zona de mayor frustración: <strong>sabes que funciona, pero no puedes controlarlo.</strong></p>
+            
+            <div class="insight-box">
+                <strong>Insight crítico:</strong>
+                La diferencia entre $50K/mes inestables y $50K/mes predecibles no es trabajar más. Es documentar qué funciona, eliminar lo que no, y construir procesos que se ejecuten sin ti.
+            </div>
+            
+            <ul>
+                <li>Tus ventas dependen de timing y suerte, no de proceso</li>
+                <li>Los leads avanzan o se caen según quién los atienda o qué humor tengan</li>
+                <li>No tienes claridad de qué mensaje, activo o canal realmente cierra</li>
+                <li>Duplicar ventas significa duplicar tu estrés y horas trabajadas</li>
+                <li>Cada nuevo cliente requiere customización y esfuerzo manual</li>
+            </ul>
+        </div>
+        
+        <div class="diagnostic-box">
+            <h2>Por qué no has podido escalar</h2>
+            
+            <p>Negocios en esta fase tienen capacidad, pero están atrapados por tres bloqueos sistémicos:</p>
+            
+            <h3>1. No hay documentación del proceso comercial</h3>
+            <p>Sabes cerrar ventas, pero es artesanal. Si alguien más tuviera que hacerlo o tú tuvieras que multiplicarlo, no hay un playbook claro. Cada venta es "única".</p>
+            
+            <h3>2. Los activos no están alineados al journey</h3>
+            <p>Tienes contenido, propuestas, materiales... pero no corresponden a las dudas reales en cada etapa de decisión. Resultado: los leads se enfrían porque no reciben lo que necesitan cuando lo necesitan.</p>
+            
+            <h3>3. No mides lo que importa</h3>
+            <p>Sabes cuántos leads llegan, pero no sabes cuántos avanzan por etapa, dónde se caen, qué información acelera o frena, o cuánto cuesta realmente adquirir un cliente rentable.</p>
+            
+            <table class="comparison-table">
+                <thead>
+                    <tr>
+                        <th>Aspecto</th>
+                        <th>Estado Actual</th>
+                        <th>Estado Objetivo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Ventas</td>
+                        <td class="current">Inconsistentes mes a mes</td>
+                        <td class="target">Predecibles dentro de un rango</td>
+                    </tr>
+                    <tr>
+                        <td>Proceso</td>
+                        <td class="current">Improvisado caso por caso</td>
+                        <td class="target">Documentado y replicable</td>
+                    </tr>
+                    <tr>
+                        <td>Activos</td>
+                        <td class="current">Existen pero no están integrados</td>
+                        <td class="target">Alineados a cada etapa del journey</td>
+                    </tr>
+                    <tr>
+                        <td>Métricas</td>
+                        <td class="current">Vanity metrics o supuestos</td>
+                        <td class="target">KPIs de conversión por etapa</td>
+                    </tr>
+                    <tr>
+                        <td>Escalabilidad</td>
+                        <td class="current">Requiere más de ti</td>
+                        <td class="target">Sistema que opera sin intervención</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="next-steps">
+            <h3>Tu ruta: Sistematización en 3 bloques</h3>
+            
+            <p><span class="step-number">1</span><strong>Mapear y documentar el proceso real (Semanas 1-3)</strong></p>
+            <p>No inventes un proceso ideal. Documenta exactamente cómo cierras las ventas que ya están funcionando: qué preguntas haces, qué objeciones surgen, qué información solicitan, en qué momento deciden.</p>
+            <ul>
+                <li>Registra las últimas 10 ventas: qué pasó en cada etapa</li>
+                <li>Identifica el patrón común entre las que cerraron vs. las que se cayeron</li>
+                <li>Documenta las 5 preguntas críticas que siempre surgen</li>
+                <li>Define las 3 etapas claras de tu funnel con criterios de avance</li>
+            </ul>
+            
+            <p><span class="step-number">2</span><strong>Crear activos específicos por etapa (Semanas 4-6)</strong></p>
+            <p>Ahora que sabes qué información necesitan en cada momento, construye los activos que respondan exactamente eso. No más contenido genérico.</p>
+            <ul>
+                <li>Etapa 1 (Interés): Activo que clarifica el problema y urgencia</li>
+                <li>Etapa 2 (Evaluación): Activo que muestra tu solución vs. alternativas</li>
+                <li>Etapa 3 (Decisión): Activo que resuelve objeciones finales</li>
+                <li>Secuencia automatizada de seguimiento con estos activos</li>
+            </ul>
+            
+            <p><span class="step-number">3</span><strong>Instrumentar y optimizar (Semanas 7-12)</strong></p>
+            <p>Establece las métricas que te dirán exactamente dónde se cae el funnel y qué optimizar. Cada mes, identifica el cuello de botella principal y atácalo.</p>
+            <ul>
+                <li>Tasa de conversión por etapa (Lead → Oportunidad → Cierre)</li>
+                <li>Tiempo promedio en cada etapa</li>
+                <li>Costo de adquisición por canal vs. lifetime value</li>
+                <li>Tasa de retención/recompra a 90 días</li>
+            </ul>
+        </div>
+        
+        <div class="diagnostic-box">
+            <h2>Evita estas trampas comunes</h2>
+            
+            <ul>
+                <li><strong>Contratar vendedores antes de tener proceso:</strong> Sin sistema documentado, solo vas a replicar inconsistencia. Documenta primero.</li>
+                <li><strong>Invertir en automatización prematura:</strong> Automatizar un proceso roto solo acelera el problema. Optimiza manualmente antes de automatizar.</li>
+                <li><strong>Agregar más canales sin dominar uno:</strong> Llevas tráfico de múltiples lugares a un funnel que no convierte bien. Arregla conversión primero.</li>
+                <li><strong>Crear más contenido sin medir impacto:</strong> El problema no es cantidad de contenido, es relevancia y timing. Enfócate en activos que cierren brechas específicas.</li>
+                <li><strong>Bajar precios para cerrar más:</strong> Si dependes de descuentos, tu problema es claridad de valor, no precio. Mejora la comunicación del ROI.</li>
+            </ul>
+        </div>
+        
+        <div class="cta-box">
+            <h3>Siguiente paso</h3>
+            <p>Necesitas una auditoría de sistemas para identificar exactamente dónde se cae tu funnel y qué activos/procesos construir primero. Esto no es estrategia: es ingeniería de conversión.</p>
+            <a href="#" class="cta-button">Solicitar Auditoría de Sistemas</a>
+        </div>
+    </div>
+</body>
+</html>

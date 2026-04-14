@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Diagnóstico: Fase de Estabilización</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            line-height: 1.6;
+            color: #1a1a1a;
+            background: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 40px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 10px 40px rgba(102, 126, 234, 0.3);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+        
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            font-weight: 300;
+        }
+        
+        .diagnostic-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        
+        .diagnostic-box h2 {
+            color: #667eea;
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .diagnostic-box h3 {
+            color: #333;
+            font-size: 1.4rem;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+        
+        .diagnostic-box p {
+            color: #555;
+            margin-bottom: 15px;
+            font-size: 1.05rem;
+        }
+        
+        .diagnostic-box ul {
+            margin: 20px 0;
+            padding-left: 0;
+            list-style: none;
+        }
+        
+        .diagnostic-box li {
+            padding: 12px 0 12px 30px;
+            position: relative;
+            color: #444;
+        }
+        
+        .diagnostic-box li:before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .alert-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 6px;
+        }
+        
+        .alert-box strong {
+            color: #856404;
+            display: block;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .next-steps {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 6px;
+        }
+        
+        .next-steps h3 {
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+        
+        .step-number {
+            display: inline-block;
+            background: #4caf50;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+        
+        .cta-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 40px;
+        }
+        
+        .cta-box h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+        
+        .cta-box p {
+            font-size: 1.1rem;
+            margin-bottom: 25px;
+            opacity: 0.95;
+        }
+        
+        .cta-button {
+            display: inline-block;
+            background: white;
+            color: #667eea;
+            padding: 15px 40px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+        }
+        
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .metric-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #dc3545;
+        }
+        
+        .metric-card strong {
+            display: block;
+            color: #dc3545;
+            font-size: 1.1rem;
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Fase de Estabilización</h1>
+            <p class="subtitle">Tu negocio necesita bases sólidas antes de escalar</p>
+        </div>
+        
+        <div class="diagnostic-box">
+            <h2>Diagnóstico: Estado Actual</h2>
+            
+            <div class="alert-box">
+                <strong>Situación detectada:</strong>
+                Tu negocio está en modo supervivencia. Las ventas son inexistentes o extremadamente inestables, no hay claridad sobre qué funciona, y cada venta requiere esfuerzo heroico. El problema no es de marketing: es de fundamentos.
+            </div>
+            
+            <h3>Indicadores críticos identificados:</h3>
+            
+            <div class="metric-grid">
+                <div class="metric-card">
+                    <strong>Funnel roto</strong>
+                    <p>No llega gente o no avanza en el proceso</p>
+                </div>
+                <div class="metric-card">
+                    <strong>Oferta difusa</strong>
+                    <p>Múltiples ofertas o valor poco claro</p>
+                </div>
+                <div class="metric-card">
+                    <strong>Dependencia total</strong>
+                    <p>Cada venta requiere descuentos o intervención directa</p>
+                </div>
+                <div class="metric-card">
+                    <strong>Sin recurrencia</strong>
+                    <p>Los clientes no vuelven ni recomiendan</p>
+                </div>
+            </div>
+            
+            <h3>Qué está pasando realmente:</h3>
+            <p>Tu negocio no tiene un motor de crecimiento funcional. Estás operando sin claridad sobre:</p>
+            <ul>
+                <li>Quién es tu cliente ideal y qué problema urgente resuelves</li>
+                <li>Por qué deberían elegirte sobre hacer nada o elegir a otro</li>
+                <li>Cómo conviertes interés en decisión de compra</li>
+                <li>Qué canales realmente traen clientes que compran</li>
+                <li>Si tu modelo económico soporta crecimiento</li>
+            </ul>
+            
+            <p>Los síntomas que ves (pocas ventas, leads que no cierran, costos altos) no son el problema. Son consecuencias de no tener una oferta clara vendida a través de un proceso predecible.</p>
+        </div>
+        
+        <div class="diagnostic-box">
+            <h2>Por qué ocurre esto</h2>
+            
+            <p>La mayoría de negocios en esta fase cometen tres errores fundamentales:</p>
+            
+            <h3>1. Vender sin oferta definida</h3>
+            <p>Tienes múltiples servicios/productos o cambias la propuesta según el cliente. Resultado: nadie entiende rápidamente qué vendes ni por qué importa.</p>
+            
+            <h3>2. Confundir actividad con estrategia</h3>
+            <p>Estás en redes sociales, haces contenido, pruebas anuncios, pero sin medir qué mueve la aguja. Gastar energía sin medir retorno es la receta perfecta para el agotamiento.</p>
+            
+            <h3>3. No validar antes de escalar</h3>
+            <p>Intentas crecer sin haber probado que tu oferta resuelve un problema urgente por el que la gente paga sin objeciones constantes. Escalar un modelo roto solo multiplica pérdidas.</p>
+        </div>
+        
+        <div class="next-steps">
+            <h3>Tu ruta de salida: 3 pasos secuenciales</h3>
+            
+            <p><span class="step-number">1</span><strong>Definir oferta única y urgente (Semanas 1-2)</strong></p>
+            <p>Antes de hacer cualquier marketing, necesitas una oferta que alguien entienda en 10 segundos y quiera inmediatamente. Si cuesta explicar qué vendes o por qué es urgente, el problema está aquí.</p>
+            <ul>
+                <li>Identifica el problema más costoso/urgente que resuelves</li>
+                <li>Define una oferta principal clara (deja todo lo demás en pausa)</li>
+                <li>Valida con 5 conversaciones de clientes potenciales</li>
+            </ul>
+            
+            <p><span class="step-number">2</span><strong>Construir proceso de venta mínimo (Semanas 3-4)</strong></p>
+            <p>Necesitas un camino predecible desde "me interesa" hasta "compro" sin improvisación ni descuentos. Documenta exactamente qué preguntas hacer, qué objeciones surgen, qué información cierra.</p>
+            <ul>
+                <li>Documenta las 3 objeciones principales y tus mejores respuestas</li>
+                <li>Crea 1-2 activos clave que aceleren la decisión</li>
+                <li>Establece un pricing fijo sin negociación</li>
+            </ul>
+            
+            <p><span class="step-number">3</span><strong>Probar un solo canal con métrica clara (Semanas 5-8)</strong></p>
+            <p>Elige UN canal (recomendaciones, outreach directo, anuncios simples) y mide una métrica: costo por cliente adquirido vs. valor de ese cliente. Si no es rentable aquí, no lo será a escala.</p>
+            <ul>
+                <li>Selecciona el canal más directo a tu cliente</li>
+                <li>Establece un presupuesto de prueba fijo</li>
+                <li>Mide conversión real, no vanity metrics</li>
+            </ul>
+        </div>
+        
+        <div class="diagnostic-box">
+            <h2>Lo que NO debes hacer ahora</h2>
+            
+            <ul>
+                <li><strong>Lanzar más productos/servicios:</strong> Más opciones = más confusión. Necesitas una oferta ganadora primero.</li>
+                <li><strong>Invertir en branding o imagen:</strong> Un logo bonito no arregla una oferta difusa. Primero vende, luego embelece.</li>
+                <li><strong>Contratar un equipo de marketing:</strong> Sin claridad de oferta y proceso, solo vas a pagar por más actividad sin resultados.</li>
+                <li><strong>Probar múltiples canales:</strong> Necesitas dominación en uno antes de diversificar.</li>
+                <li><strong>Crear contenido masivo:</strong> El contenido sin estrategia de conversión solo genera audiencia, no clientes.</li>
+            </ul>
+        </div>
+        
+        <div class="cta-box">
+            <h3>Siguiente paso</h3>
+            <p>Si este diagnóstico refleja tu realidad, necesitas una sesión de claridad estratégica para definir tu oferta núcleo y validar viabilidad antes de invertir en crecimiento.</p>
+            <a href="#" class="cta-button">Agendar Sesión de Claridad</a>
+        </div>
+    </div>
+</body>
+</html>
