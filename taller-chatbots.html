@@ -1256,6 +1256,139 @@
       padding: 8px 14px;
     }
 
+    /* ═══ Visual Tree Map ═══ */
+    .vtree {
+      position: relative;
+      margin: 28px 0;
+      overflow-x: auto;
+    }
+
+    .vtree-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      position: relative;
+    }
+
+    .vtree-connector {
+      display: flex;
+      justify-content: center;
+      padding: 6px 0;
+    }
+
+    .vtree-line-v {
+      width: 2px;
+      height: 20px;
+      background: var(--border2);
+    }
+
+    .vtree-branches {
+      display: flex;
+      justify-content: center;
+      position: relative;
+      padding: 0 0 6px;
+    }
+
+    .vtree-branches::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      height: 2px;
+      background: var(--border2);
+    }
+
+    .vtree-branches.b3::before {
+      left: calc(50% - 180px);
+      width: 360px;
+    }
+
+    .vtree-branches.b4::before {
+      left: calc(50% - 250px);
+      width: 500px;
+    }
+
+    .vtree-branch {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    .vtree-branch .vtree-line-v {
+      height: 14px;
+    }
+
+    .vtree-node {
+      padding: 10px 16px;
+      border-radius: 10px;
+      border: 1px solid;
+      text-align: center;
+      min-width: 120px;
+      max-width: 180px;
+    }
+
+    .vtree-node.root {
+      background: var(--blue-dim);
+      border-color: var(--blue-line);
+      padding: 14px 28px;
+      min-width: 200px;
+    }
+
+    .vtree-node.root .vt-title { color: var(--blue); }
+
+    .vtree-node.option {
+      background: var(--yellow-dim);
+      border-color: var(--yellow-line);
+    }
+
+    .vtree-node.option .vt-title { color: var(--yellow); }
+
+    .vtree-node.sub {
+      background: var(--surface);
+      border-color: var(--border);
+      min-width: 100px;
+      max-width: 140px;
+    }
+
+    .vtree-node.leaf {
+      background: var(--green-dim);
+      border-color: var(--green-line);
+      min-width: 100px;
+      max-width: 140px;
+    }
+
+    .vtree-node.leaf .vt-title { color: var(--green); }
+
+    .vtree-node.escalate {
+      background: var(--red-dim);
+      border-color: var(--red-line);
+    }
+
+    .vtree-node.escalate .vt-title { color: var(--red); }
+
+    .vt-emoji { font-size: 1.2rem; margin-bottom: 4px; }
+
+    .vt-title {
+      font-size: 0.68rem;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.3;
+    }
+
+    .vt-sub {
+      font-size: 0.58rem;
+      color: var(--muted);
+      margin-top: 3px;
+      line-height: 1.3;
+    }
+
+    @media (max-width: 640px) {
+      .vtree { transform: scale(0.75); transform-origin: top center; }
+      .vtree-node { min-width: 90px; max-width: 120px; padding: 8px 10px; }
+      .vtree-branches.b3::before { left: calc(50% - 130px); width: 260px; }
+      .vtree-branches.b4::before { left: calc(50% - 170px); width: 340px; }
+    }
+
     /* ═══ Fade Animations ═══ */
     .fade {
       opacity: 0;
@@ -1415,6 +1548,139 @@
       <div class="callout callout-y">
         <div class="callout-label">🎯 La combinación ganadora</div>
         <p>Un chatbot profesional ofrece <strong>ambos modos</strong>. Al iniciar, presenta botones con las opciones principales (árbol). Pero si el usuario prefiere escribir, el RAG responde igualmente. Esto cubre el <strong>100% de los escenarios</strong>.</p>
+      </div>
+
+      <h3 style="margin-top: 28px; margin-bottom: 12px;">Mapa visual del árbol de IDEOFACTO</h3>
+      <p class="intro">Vista completa de todas las rutas de conversación del chatbot:</p>
+
+      <div class="vtree">
+        <!-- Level 0: Root -->
+        <div class="vtree-row">
+          <div class="vtree-node root">
+            <div class="vt-emoji">🤖</div>
+            <div class="vt-title">¡Hola! ¿En qué puedo ayudarte?</div>
+            <div class="vt-sub">Mensaje de bienvenida</div>
+          </div>
+        </div>
+
+        <!-- Connector -->
+        <div class="vtree-connector"><div class="vtree-line-v"></div></div>
+
+        <!-- Level 1: Main options (3 branches) -->
+        <div class="vtree-branches b3">
+          <div class="vtree-branch" style="flex:1; max-width: 200px;">
+            <div class="vtree-line-v"></div>
+            <div class="vtree-node option">
+              <div class="vt-emoji">📋</div>
+              <div class="vt-title">Fases y precios</div>
+            </div>
+            <!-- Sub-connector -->
+            <div style="padding: 4px 0;"><div class="vtree-line-v" style="margin: 0 auto;"></div></div>
+            <!-- Sub-branches -->
+            <div style="display: flex; gap: 6px;">
+              <div style="display:flex; flex-direction:column; align-items:center;">
+                <div class="vtree-line-v" style="height:10px;"></div>
+                <div class="vtree-node sub">
+                  <div class="vt-title">🃏 Kit</div>
+                  <div class="vt-sub">$500 MXN</div>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center;">
+                <div class="vtree-line-v" style="height:10px;"></div>
+                <div class="vtree-node sub">
+                  <div class="vt-title">F1</div>
+                  <div class="vt-sub">$3,000</div>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center;">
+                <div class="vtree-line-v" style="height:10px;"></div>
+                <div class="vtree-node sub">
+                  <div class="vt-title">F2</div>
+                  <div class="vt-sub">$5,000</div>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center;">
+                <div class="vtree-line-v" style="height:10px;"></div>
+                <div class="vtree-node sub">
+                  <div class="vt-title">F3</div>
+                  <div class="vt-sub">desde $3,500</div>
+                </div>
+              </div>
+            </div>
+            <!-- Leaf -->
+            <div style="padding: 4px 0;"><div class="vtree-line-v" style="margin: 0 auto;"></div></div>
+            <div class="vtree-node leaf">
+              <div class="vt-title">✅ Detalle + CTA</div>
+              <div class="vt-sub">"¿Empezar con el Kit?"</div>
+            </div>
+          </div>
+
+          <div class="vtree-branch" style="flex:1; max-width: 200px;">
+            <div class="vtree-line-v"></div>
+            <div class="vtree-node option">
+              <div class="vt-emoji">🎯</div>
+              <div class="vt-title">¿Es para mí?</div>
+            </div>
+            <div style="padding: 4px 0;"><div class="vtree-line-v" style="margin: 0 auto;"></div></div>
+            <div style="display: flex; gap: 6px;">
+              <div style="display:flex; flex-direction:column; align-items:center;">
+                <div class="vtree-line-v" style="height:10px;"></div>
+                <div class="vtree-node leaf">
+                  <div class="vt-title">✅ Sí</div>
+                  <div class="vt-sub">Recomendar Kit</div>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center;">
+                <div class="vtree-line-v" style="height:10px;"></div>
+                <div class="vtree-node escalate">
+                  <div class="vt-title">⚠️ No aplica</div>
+                  <div class="vt-sub">Nota honesta</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="vtree-branch" style="flex:1; max-width: 200px;">
+            <div class="vtree-line-v"></div>
+            <div class="vtree-node option">
+              <div class="vt-emoji">❓</div>
+              <div class="vt-title">Otra pregunta</div>
+              <div class="vt-sub">Texto libre</div>
+            </div>
+            <div style="padding: 4px 0;"><div class="vtree-line-v" style="margin: 0 auto;"></div></div>
+            <div class="vtree-node" style="background: var(--blue-dim); border-color: var(--blue-line);">
+              <div class="vt-title" style="color: var(--blue);">🔍 Búsqueda RAG</div>
+              <div class="vt-sub">Busca en el FAQ</div>
+            </div>
+            <div style="padding: 4px 0;"><div class="vtree-line-v" style="margin: 0 auto;"></div></div>
+            <div style="display: flex; gap: 6px;">
+              <div style="display:flex; flex-direction:column; align-items:center;">
+                <div class="vtree-line-v" style="height:10px;"></div>
+                <div class="vtree-node leaf">
+                  <div class="vt-title">✅ Respuesta</div>
+                  <div class="vt-sub">Desde el FAQ</div>
+                </div>
+              </div>
+              <div style="display:flex; flex-direction:column; align-items:center;">
+                <div class="vtree-line-v" style="height:10px;"></div>
+                <div class="vtree-node escalate">
+                  <div class="vt-title">👤 Escalar</div>
+                  <div class="vt-sub">A humano</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="callout callout-b" style="margin-bottom: 28px;">
+        <div class="callout-label">📚 Leyenda</div>
+        <p>
+          <span style="display:inline-block; width:10px; height:10px; border-radius:3px; background:var(--blue-dim); border:1px solid var(--blue-line); margin-right:4px;"></span> <strong>Inicio / RAG</strong>   
+          <span style="display:inline-block; width:10px; height:10px; border-radius:3px; background:var(--yellow-dim); border:1px solid var(--yellow-line); margin-right:4px;"></span> <strong>Opción del usuario</strong>   
+          <span style="display:inline-block; width:10px; height:10px; border-radius:3px; background:var(--green-dim); border:1px solid var(--green-line); margin-right:4px;"></span> <strong>Respuesta final</strong>   
+          <span style="display:inline-block; width:10px; height:10px; border-radius:3px; background:var(--red-dim); border:1px solid var(--red-line); margin-right:4px;"></span> <strong>Escalación / Límite</strong>
+        </p>
       </div>
 
       <h3 style="margin-top: 28px; margin-bottom: 12px;">Ejemplo interactivo: árbol de navegación</h3>
