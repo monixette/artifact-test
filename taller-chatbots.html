@@ -1400,6 +1400,42 @@
     }
 
     /* ═══ Side Navigation Buttons ═══ */
+    /* Nav scroll controller — ‹ › buttons */
+    .nav-scroll-ctrl {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      flex-shrink: 0;
+      margin-left: 6px;
+      padding-right: 2px;
+    }
+    .nav-scroll-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.04);
+      color: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.2s;
+      -webkit-user-select: none;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .nav-scroll-btn:hover {
+      background: rgba(255, 255, 255, 0.10);
+      color: rgba(255, 255, 255, 0.7);
+      border-color: rgba(255, 255, 255, 0.22);
+    }
+    .nav-scroll-btn.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ═══ Side Navigation Buttons ═══ */
     #btn-prev, #btn-next {
       position: fixed;
       top: 50%;
@@ -1450,10 +1486,16 @@
       <a href="#ejercicio">Implementar</a>
       <a href="#discovery">Recursos</a>
     </div>
+    <div class="nav-scroll-ctrl">
+      <div class="nav-scroll-btn hidden" id="nav-scroll-left">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+      </div>
+      <div class="nav-scroll-btn" id="nav-scroll-right">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+      </div>
+    </div>
   </nav>
 
-  <button id="btn-prev" class="hidden" onclick="navigateSections(-1)" aria-label="Anterior">←</button>
-  <button id="btn-next" onclick="navigateSections(1)" aria-label="Siguiente">→</button>
 
   <div class="page">
 
@@ -2729,7 +2771,6 @@ Si reportan problemas → redirigir a [WHATSAPP/EMAIL]
       const result = optionEl.nextElementSibling;
       if (result && result.classList.contains('dt-result')) {
         const isVisible = result.classList.contains('show');
-        // Hide all results in same group
         const parent = optionEl.closest('.dt-options');
         parent.querySelectorAll('.dt-result').forEach(r => r.classList.remove('show'));
         parent.querySelectorAll('.dt-option').forEach(o => o.classList.remove('selected'));
@@ -2740,44 +2781,52 @@ Si reportan problemas → redirigir a [WHATSAPP/EMAIL]
       }
     }
 
-    // ── Side Navigation Logic
-    const sections = Array.from(document.querySelectorAll('.section'));
-    const btnPrev = document.getElementById('btn-prev');
-    const btnNext = document.getElementById('btn-next');
+    // ── Nav scroll buttons (‹ ›)
+    (function () {
+      const navLinksEl = document.querySelector('.nav-links');
+      const btnL = document.getElementById('nav-scroll-left');
+      const btnR = document.getElementById('nav-scroll-right');
+      if (!navLinksEl || !btnL || !btnR) return;
 
-    function navigateSections(dir) {
-      const currentScroll = window.pageYOffset + 120;
-      let currentIndex = -1;
-      
-      sections.forEach((s, i) => {
-        if (s.offsetTop <= currentScroll) currentIndex = i;
-      });
+      function update() {
+        const atStart = navLinksEl.scrollLeft <= 4;
+        const atEnd = navLinksEl.scrollLeft + navLinksEl.clientWidth >= navLinksEl.scrollWidth - 4;
+        btnL.classList.toggle('hidden', atStart);
+        btnR.classList.toggle('hidden', atEnd);
+      }
 
-      let targetIndex = currentIndex + dir;
-      if (targetIndex < 0) targetIndex = 0;
-      if (targetIndex >= sections.length) targetIndex = sections.length - 1;
+      function scrollToNextPill(direction) {
+        const links = Array.from(navLinksEl.querySelectorAll('a'));
+        const containerLeft = navLinksEl.scrollLeft;
+        const containerWidth = navLinksEl.clientWidth;
+        const containerRight = containerLeft + containerWidth;
+        if (direction === 1) {
+          for (const link of links) {
+            const linkRight = link.offsetLeft + link.offsetWidth;
+            if (linkRight > containerRight + 2) {
+              navLinksEl.scrollTo({ left: linkRight - containerWidth, behavior: 'smooth' });
+              return;
+            }
+          }
+        } else {
+          for (let i = links.length - 1; i >= 0; i--) {
+            const link = links[i];
+            if (link.offsetLeft < containerLeft - 2) {
+              navLinksEl.scrollTo({ left: link.offsetLeft, behavior: 'smooth' });
+              return;
+            }
+          }
+          navLinksEl.scrollTo({ left: 0, behavior: 'smooth' });
+        }
+      }
 
-      // Handle cases where we are currently "above" the first section
-      if (currentIndex === -1 && dir === 1) targetIndex = 0;
-
-      const target = sections[targetIndex];
-      const y = target.getBoundingClientRect().top + window.pageYOffset - 85;
-      window.scrollTo({ top: y, behavior: 'smooth' });
-    }
-
-    window.addEventListener('scroll', () => {
-      const currentScroll = window.pageYOffset + 200;
-      let currentIndex = -1;
-      sections.forEach((s, i) => {
-        if (s.offsetTop <= currentScroll) currentIndex = i;
-      });
-
-      if (currentIndex <= 0) btnPrev.classList.add('hidden');
-      else btnPrev.classList.remove('hidden');
-
-      if (currentIndex >= sections.length - 1) btnNext.classList.add('hidden');
-      else btnNext.classList.remove('hidden');
-    });
+      btnL.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); scrollToNextPill(-1); });
+      btnR.addEventListener('click', e => { e.preventDefault(); e.stopPropagation(); scrollToNextPill(1); });
+      navLinksEl.addEventListener('scroll', update);
+      window.addEventListener('resize', update);
+      requestAnimationFrame(() => { navLinksEl.scrollLeft = 0; update(); });
+    })();
   </script>
 </body>
 </html>
+
