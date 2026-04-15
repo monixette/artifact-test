@@ -1112,6 +1112,150 @@
     .tag-red { color: var(--red); }
     .tag-sep { color: var(--muted2); margin: 0 6px; }
 
+    /* ═══ Service Blueprint ═══ */
+    .blueprint {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 24px 0;
+    }
+
+    .bp-row {
+      display: grid;
+      grid-template-columns: 140px repeat(4, 1fr);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .bp-row:last-child { border-bottom: none; }
+
+    .bp-row.bp-visibility {
+      border-bottom: 2px dashed var(--red);
+      position: relative;
+    }
+
+    .bp-row.bp-visibility::after {
+      content: '— — — línea de visibilidad — — —';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.55rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--red);
+      background: var(--bg);
+      padding: 0 12px;
+      white-space: nowrap;
+      z-index: 2;
+    }
+
+    .bp-cell {
+      padding: 12px 14px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.6;
+      border-right: 1px solid var(--border);
+    }
+
+    .bp-cell:last-child { border-right: none; }
+
+    .bp-cell.bp-label {
+      font-weight: 700;
+      font-size: 0.62rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .bp-cell.bp-label.lb { color: var(--blue); background: var(--blue-dim); }
+    .bp-cell.bp-label.ly { color: var(--yellow); background: var(--yellow-dim); }
+    .bp-cell.bp-label.lr { color: var(--red); background: var(--red-dim); }
+    .bp-cell.bp-label.lg { color: var(--green); background: var(--green-dim); }
+    .bp-cell.bp-label.lm { color: var(--muted); background: var(--surface2); }
+
+    .bp-cell.bp-head {
+      font-weight: 700;
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text);
+      text-align: center;
+      background: var(--surface);
+      padding: 10px;
+    }
+
+    .bp-cell strong { color: var(--text); }
+
+    /* ═══ Discovery Table ═══ */
+    .disc-table {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin: 20px 0;
+    }
+
+    .disc-row {
+      display: grid;
+      grid-template-columns: 36px 1fr 90px;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.2s;
+    }
+
+    .disc-row:last-child { border-bottom: none; }
+    .disc-row:hover { background: rgba(255,255,255,0.02); }
+
+    .disc-row.disc-header {
+      background: var(--surface);
+    }
+
+    .disc-row.disc-block-header {
+      background: var(--surface2);
+      grid-template-columns: 1fr;
+    }
+
+    .disc-cell {
+      padding: 10px 14px;
+      font-size: 0.76rem;
+      color: var(--muted);
+      line-height: 1.5;
+      border-right: 1px solid var(--border);
+    }
+
+    .disc-cell:last-child { border-right: none; }
+
+    .disc-cell.disc-num {
+      font-weight: 800;
+      color: var(--text);
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .disc-cell.disc-q strong { color: var(--text); }
+
+    .disc-cell.disc-type {
+      font-size: 0.62rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .disc-block-title {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 8px 14px;
+    }
+
     /* ═══ Fade Animations ═══ */
     .fade {
       opacity: 0;
@@ -1140,6 +1284,9 @@
       .flow-item:nth-child(2) { border-right: none; }
       .flow-item:nth-child(2)::after { display: none; }
       .compare-row { grid-template-columns: 72px 1fr 1fr 1fr; }
+      .bp-row { grid-template-columns: 80px repeat(4, 1fr); }
+      .bp-cell { padding: 8px 6px; font-size: 0.62rem; }
+      .disc-row { grid-template-columns: 28px 1fr 70px; }
       .step-item, .insert-item { grid-template-columns: 1fr; }
     }
   </style>
@@ -1162,6 +1309,7 @@
       <a href="#embed">Insertar</a>
       <a href="#ejercicio">Ejercicio</a>
       <a href="#decide">Decidir</a>
+      <a href="#discovery">Discovery</a>
       <a href="#plantilla">Plantilla</a>
     </div>
   </nav>
@@ -1400,6 +1548,57 @@
         </div>
       </div>
 
+      <h3 style="margin-top: 36px; margin-bottom: 12px;">Service blueprint del chatbot</h3>
+      <p class="intro">Un árbol de decisión muestra <strong style="color:var(--text)">qué ve el usuario</strong>. Un service blueprint muestra <strong style="color:var(--text)">todo el sistema</strong> — lo visible y lo invisible.</p>
+
+      <div class="blueprint">
+        <!-- Header -->
+        <div class="bp-row">
+          <div class="bp-cell bp-head" style="background: var(--surface2);">Capa</div>
+          <div class="bp-cell bp-head">Saludo</div>
+          <div class="bp-cell bp-head">Opciones</div>
+          <div class="bp-cell bp-head">Consulta</div>
+          <div class="bp-cell bp-head">Cierre</div>
+        </div>
+        <!-- User Actions -->
+        <div class="bp-row">
+          <div class="bp-cell bp-label lb">👤 Usuario</div>
+          <div class="bp-cell">Abre el chat widget en ideofacto.com</div>
+          <div class="bp-cell">Hace clic en <strong>"💰 ¿Cuánto cuesta?"</strong></div>
+          <div class="bp-cell">Escribe: <strong>"¿puedo pagar en USD?"</strong></div>
+          <div class="bp-cell">Hace clic en <strong>"Empezar con el Kit"</strong></div>
+        </div>
+        <!-- Frontstage -->
+        <div class="bp-row bp-visibility">
+          <div class="bp-cell bp-label ly">💬 Bot (visible)</div>
+          <div class="bp-cell">"¡Hola! 👋 Soy el asistente de IDEOFACTO"</div>
+          <div class="bp-cell">Muestra precios: Kit $500, F1 $3,000, F2 $5,000, F3 desde $3,500</div>
+          <div class="bp-cell">"Sí, el cobro se ajusta automáticamente según tu tarjeta"</div>
+          <div class="bp-cell">Redirige a deck.ideofacto.com o WhatsApp</div>
+        </div>
+        <!-- Backstage -->
+        <div class="bp-row">
+          <div class="bp-cell bp-label lr">⚙️ Backstage</div>
+          <div class="bp-cell">Carga system instructions + FAQ</div>
+          <div class="bp-cell">Respuesta predefinida (árbol) — sin búsqueda RAG</div>
+          <div class="bp-cell"><strong>Búsqueda RAG</strong> en el FAQ → fragmento sobre pagos</div>
+          <div class="bp-cell">Genera link con UTM para tracking</div>
+        </div>
+        <!-- Support -->
+        <div class="bp-row">
+          <div class="bp-cell bp-label lm">🗄️ Soporte</div>
+          <div class="bp-cell">Base de conocimiento (ideofacto-faq.md)</div>
+          <div class="bp-cell">Datos de precios en el system prompt</div>
+          <div class="bp-cell">Vector DB con embeddings del FAQ</div>
+          <div class="bp-cell">Stripe / WhatsApp Business</div>
+        </div>
+      </div>
+
+      <div class="callout callout-r">
+        <div class="callout-label">🔴 La línea de visibilidad es clave</div>
+        <p>Todo lo que está <strong>arriba</strong> de la línea roja es lo que el usuario ve. Todo <strong>debajo</strong> es invisible para él pero esencial para que funcione. El blueprint te obliga a pensar en <strong>ambas capas</strong> antes de implementar.</p>
+      </div>
+
       <h3 style="margin-top: 28px; margin-bottom: 12px;">System instructions del chatbot</h3>
       <p class="intro">Estas instrucciones son <strong style="color:var(--text)">idénticas</strong> para Custom GPT (campo "Instructions") y Chatbase (campo "Custom Instructions").</p>
 
@@ -1456,6 +1655,95 @@ Le facilitamos el sistema para que lo produzca con autonomía.
       <div class="callout callout-b" style="margin-top: 8px;">
         <div class="callout-label">📎 Archivo completo disponible</div>
         <p>Las system instructions completas (con todas las reglas, perfil de cliente ideal, y guía de configuración paso a paso para cada plataforma) están en el archivo <strong>system-instructions-ideofacto.md</strong>.</p>
+      </div>
+    </div>
+
+    <!-- ═══ DISCOVERY ═══ -->
+    <div class="section fade" id="discovery" data-nav="#discovery">
+      <span class="section-number ny">03.5 · DISCOVERY</span>
+      <h2>Cuestionario de discovery: las 11 preguntas antes de construir</h2>
+      <p class="intro">Antes de tocar cualquier plataforma, responde estas preguntas. Las respuestas alimentan directamente el <strong style="color:var(--text)">system prompt, el FAQ, y los límites</strong> del chatbot.</p>
+
+      <div class="disc-table">
+        <!-- Bloque 1 -->
+        <div class="disc-row disc-block-header">
+          <div class="disc-block-title" style="color: var(--blue);">📌 Bloque 1 — Negocio</div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-cell disc-num">1</div>
+          <div class="disc-cell disc-q"><strong>¿Qué vende, a quién y cuál es su promesa?</strong><br>→ Define la sección IDENTIDAD del system prompt</div>
+          <div class="disc-cell disc-type" style="color: var(--blue);">Base</div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-cell disc-num">2</div>
+          <div class="disc-cell disc-q"><strong>¿Cuál es el momento donde más duele cuando el servicio falla?</strong><br>→ Identifica el caso de uso prioritario del bot</div>
+          <div class="disc-cell disc-type" style="color: var(--red);">Crítica</div>
+        </div>
+
+        <!-- Bloque 2 -->
+        <div class="disc-row disc-block-header">
+          <div class="disc-block-title" style="color: var(--yellow);">📊 Bloque 2 — Canales y volumen</div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-cell disc-num">3</div>
+          <div class="disc-cell disc-q"><strong>¿Por qué canal contacta el cliente hoy — y cuál prefiere la empresa?</strong><br>→ Define dónde se despliega: web, WhatsApp, Instagram</div>
+          <div class="disc-cell disc-type" style="color: var(--yellow);">No asumir</div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-cell disc-num">4</div>
+          <div class="disc-cell disc-q"><strong>¿Cuántas conversaciones maneja al día — y cuántas son la misma pregunta?</strong><br>→ Si 70%+ son repetidas = alto ROI de automatización</div>
+          <div class="disc-cell disc-type" style="color: var(--yellow);">Define nivel</div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-cell disc-num">5</div>
+          <div class="disc-cell disc-q"><strong>¿Cuándo se satura el equipo de atención?</strong><br>→ Justifica inversión. Horarios pico = bot activo</div>
+          <div class="disc-cell disc-type" style="color: var(--green);">ROI visible</div>
+        </div>
+
+        <!-- Bloque 3 -->
+        <div class="disc-row disc-block-header">
+          <div class="disc-block-title" style="color: var(--red);">🚧 Bloque 3 — FAQs y límites</div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-cell disc-num">6</div>
+          <div class="disc-cell disc-q"><strong>¿Cuáles son las 5 preguntas que el equipo responde todos los días sin pensar?</strong><br>→ Se convierten en las Suggested Messages y el FAQ base</div>
+          <div class="disc-cell disc-type" style="color: var(--blue);">Núcleo</div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-cell disc-num">7</div>
+          <div class="disc-cell disc-q"><strong>¿Qué consultas siempre terminan escalando a un humano — y por qué?</strong><br>→ Establece la regla de handoff del bot</div>
+          <div class="disc-cell disc-type" style="color: var(--yellow);">Límites</div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-cell disc-num">8</div>
+          <div class="disc-cell disc-q"><strong>¿Qué información NO puede dar el bot bajo ninguna circunstancia?</strong><br>→ Va directo a la sección NUNCA del system prompt</div>
+          <div class="disc-cell disc-type" style="color: var(--red);">Riesgo legal</div>
+        </div>
+
+        <!-- Bloque 4 -->
+        <div class="disc-row disc-block-header">
+          <div class="disc-block-title" style="color: var(--green);">✅ Bloque 4 — Proyecto y aprobación</div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-cell disc-num">9</div>
+          <div class="disc-cell disc-q"><strong>¿Qué sistema usa la empresa para gestionar clientes?</strong><br>→ Define integraciones: CRM, WhatsApp Business, Shopify</div>
+          <div class="disc-cell disc-type" style="color: var(--blue);">Arquitectura</div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-cell disc-num">10</div>
+          <div class="disc-cell disc-q"><strong>¿Quién aprueba el bot antes de salir a producción?</strong><br>→ Identifica stakeholder para testing</div>
+          <div class="disc-cell disc-type" style="color: var(--yellow);">Proceso</div>
+        </div>
+        <div class="disc-row">
+          <div class="disc-cell disc-num">11</div>
+          <div class="disc-cell disc-q"><strong>¿Cuál es la métrica que convence a quien toma la decisión?</strong><br>→ Define el KPI: ¿reducir tickets? ¿conversiones? ¿tiempo?</div>
+          <div class="disc-cell disc-type" style="color: var(--green);">Estratégica</div>
+        </div>
+      </div>
+
+      <div class="callout callout-y">
+        <div class="callout-label">🎯 Regla de oro</div>
+        <p>Las preguntas 6 y 8 son las más importantes: la <strong>pregunta 6</strong> te da el contenido mínimo viable del chatbot, y la <strong>pregunta 8</strong> te protege legalmente. Si solo puedes responder dos, que sean estas.</p>
       </div>
     </div>
 
