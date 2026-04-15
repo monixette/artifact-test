@@ -1564,10 +1564,8 @@
         <!-- Connector -->
         <div class="vtree-connector"><div class="vtree-line-v"></div></div>
 
-        <!-- Level 1: 3 branches with explicit grid -->
-        <div class="vtree-grid-cols" style="display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 16px; position: relative;">
-          <!-- Horizontal connector line: spans from center of col1 to center of col3 -->
-          <div style="position: absolute; top: 0; left: 20%; right: 15%; height: 2px; background: var(--border2);"></div>
+        <!-- Level 1: 3 main branches -->
+        <div class="vtree-grid-cols" style="display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 16px;">
 
           <!-- Branch 1: Fases y precios -->
           <div style="display:flex; flex-direction:column; align-items:center;">
@@ -1577,7 +1575,8 @@
               <div class="vt-title">Fases y precios</div>
             </div>
             <div style="padding: 4px 0;"><div class="vtree-line-v" style="margin: 0 auto;"></div></div>
-            <div style="display: flex; gap: 8px; justify-content: center;">
+            <div style="position:relative; display: flex; gap: 8px; justify-content: center; padding-top:2px;">
+              <div style="position:absolute; top:0; left:12%; right:12%; height:2px; background:var(--border2);"></div>
               <div style="display:flex; flex-direction:column; align-items:center;">
                 <div class="vtree-line-v" style="height:10px;"></div>
                 <div class="vtree-node sub" style="min-width:70px;">
@@ -1622,7 +1621,8 @@
               <div class="vt-title">¿Es para mí?</div>
             </div>
             <div style="padding: 4px 0;"><div class="vtree-line-v" style="margin: 0 auto;"></div></div>
-            <div style="display: flex; gap: 8px; justify-content: center;">
+            <div style="position:relative; display: flex; gap: 8px; justify-content: center; padding-top:2px;">
+              <div style="position:absolute; top:0; left:15%; right:15%; height:2px; background:var(--border2);"></div>
               <div style="display:flex; flex-direction:column; align-items:center;">
                 <div class="vtree-line-v" style="height:10px;"></div>
                 <div class="vtree-node leaf" style="min-width:80px;">
@@ -1654,7 +1654,8 @@
               <div class="vt-sub">Busca en el FAQ</div>
             </div>
             <div style="padding: 4px 0;"><div class="vtree-line-v" style="margin: 0 auto;"></div></div>
-            <div style="display: flex; gap: 8px; justify-content: center;">
+            <div style="position:relative; display: flex; gap: 8px; justify-content: center; padding-top:2px;">
+              <div style="position:absolute; top:0; left:15%; right:15%; height:2px; background:var(--border2);"></div>
               <div style="display:flex; flex-direction:column; align-items:center;">
                 <div class="vtree-line-v" style="height:10px;"></div>
                 <div class="vtree-node leaf" style="min-width:80px;">
@@ -1683,6 +1684,11 @@
           <span style="display:inline-block; width:10px; height:10px; border-radius:3px; background:var(--green-dim); border:1px solid var(--green-line); margin-right:4px;"></span> <strong>Respuesta final</strong>   
           <span style="display:inline-block; width:10px; height:10px; border-radius:3px; background:var(--red-dim); border:1px solid var(--red-line); margin-right:4px;"></span> <strong>Escalación / Límite</strong>
         </p>
+      </div>
+
+      <div class="callout callout-y" style="margin-bottom: 28px;">
+        <div class="callout-label">🗺️ Del árbol al Service Blueprint</div>
+        <p>Este mapa muestra <strong>qué ve el usuario</strong>. Para documentar el sistema completo (frontstage + backstage + soporte), usa un <strong>Service Blueprint</strong> — como el que vemos en la sección del caso de uso. Herramientas como <strong>Miro</strong> tienen plantillas dedicadas para construirlo con sticky notes por touchpoint.</p>
       </div>
 
       <h3 style="margin-top: 28px; margin-bottom: 12px;">Ejemplo interactivo: árbol de navegación</h3>
