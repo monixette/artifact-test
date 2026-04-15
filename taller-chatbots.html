@@ -1399,26 +1399,49 @@
       transform: none;
     }
 
-    /* ═══ Responsive ═══ */
-    @media (max-width: 640px) {
-      nav {
-        top: 12px;
-        width: 94%;
-        height: 48px;
-        padding: 0 14px;
-      }
-      .nav-logo { height: 24px; }
-      .nav-links a { font-size: 0.55rem; padding: 4px 7px; }
-      .page { padding: 85px 18px 60px; }
-      .grid-3, .grid-2, .embed-demo { grid-template-columns: 1fr; }
-      .flow { grid-template-columns: repeat(2, 1fr); }
-      .flow-item:nth-child(2) { border-right: none; }
-      .flow-item:nth-child(2)::after { display: none; }
-      .compare-row { grid-template-columns: 72px 1fr 1fr 1fr; }
-      .bp-row { grid-template-columns: 80px repeat(4, 1fr); }
-      .bp-cell { padding: 8px 6px; font-size: 0.62rem; }
-      .disc-row { grid-template-columns: 28px 1fr 70px; }
-      .step-item, .insert-item { grid-template-columns: 1fr; }
+    /* ═══ Side Navigation Buttons ═══ */
+    .side-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 100%;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      pointer-events: none;
+      z-index: 1000;
+    }
+    .nav-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      pointer-events: auto;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+      font-size: 1.2rem;
+    }
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--blue);
+      transform: scale(1.1);
+      box-shadow: 0 0 20px rgba(74, 158, 255, 0.3);
+    }
+    .nav-btn.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(20px) scale(0.8);
+    }
+
+    @media (max-width: 768px) {
+      .side-nav { display: none; }
     }
   </style>
 </head>
@@ -1432,18 +1455,17 @@
     <div class="nav-sep"></div>
     <div class="nav-links">
       <a href="#hero" class="active">Inicio</a>
-      <a href="#rag">RAG</a>
-      <a href="#arbol">Árbol</a>
-      <a href="#caso">Caso de Uso</a>
-      <a href="#opciones">Opciones</a>
-      <a href="#compara">Comparación</a>
-      <a href="#embed">Insertar</a>
-      <a href="#ejercicio">Ejercicio</a>
-      <a href="#decide">Decidir</a>
-      <a href="#discovery">Discovery</a>
-      <a href="#plantilla">Plantilla</a>
+      <a href="#rag">Estrategia</a>
+      <a href="#opciones">Plataformas</a>
+      <a href="#ejercicio">Implementar</a>
+      <a href="#discovery">Recursos</a>
     </div>
   </nav>
+
+  <div class="side-nav">
+    <button id="btn-prev" class="nav-btn hidden" onclick="navigateSections(-1)" aria-label="Anterior">←</button>
+    <button id="btn-next" class="nav-btn" onclick="navigateSections(1)" aria-label="Siguiente">→</button>
+  </div>
 
   <div class="page">
 
@@ -1513,7 +1535,7 @@
     </div>
 
     <!-- ═══ ÁRBOLES DE DECISIÓN ═══ -->
-    <div class="section fade" id="arbol" data-nav="#arbol">
+    <div class="section fade" id="arbol" data-nav="#rag">
       <span class="section-number ny">02 · DECIDIR</span>
       <h2>Árboles de decisión: guiando al usuario</h2>
       <p class="intro">Un chatbot inteligente combina <strong style="color:var(--text)">dos modos</strong>: rutas predefinidas (árbol lógico) y consultas abiertas (lenguaje natural). Lo ideal es tener ambos.</p>
@@ -1790,7 +1812,7 @@
     </div>
 
     <!-- ═══ CASO DE USO: IDEOFACTO ═══ -->
-    <div class="section fade" id="caso" data-nav="#caso">
+    <div class="section fade" id="caso" data-nav="#rag">
       <span class="section-number nr">03 · CASO PRÁCTICO</span>
       <h2>Caso de uso: Chatbot de soporte para IDEOFACTO</h2>
       <p class="intro">Vamos a mapear cómo construiríamos un chatbot real para <strong style="color:var(--text)">IDEOFACTO</strong> — desde el FAQ hasta el widget embebido.</p>
@@ -2121,7 +2143,7 @@ Le facilitamos el sistema para que lo produzca con autonomía.
     </div>
 
     <!-- ═══ COMPARACIÓN ═══ -->
-    <div class="section fade" id="compara" data-nav="#compara">
+    <div class="section fade" id="compara" data-nav="#opciones">
       <span class="section-number ny">05 · COMPARAR</span>
       <h2>Comparación directa</h2>
 
@@ -2178,7 +2200,7 @@ Le facilitamos el sistema para que lo produzca con autonomía.
     </div>
 
     <!-- ═══ EMBED ═══ -->
-    <div class="section fade" id="embed" data-nav="#embed">
+    <div class="section fade" id="embed" data-nav="#ejercicio">
       <span class="section-number nr">06 · INSERTAR</span>
       <h2>¿Cómo se inserta en tu web?</h2>
       <p class="intro">Es literalmente copiar y pegar un fragmento de código. Así de simple.</p>
@@ -2366,7 +2388,7 @@ Le facilitamos el sistema para que lo produzca con autonomía.
     </div>
 
     <!-- ═══ DECIDIR ═══ -->
-    <div class="section fade" id="decide" data-nav="#decide">
+    <div class="section fade" id="decide" data-nav="#ejercicio">
       <span class="section-number ng">08 · DECIDIR</span>
       <h2>¿Cuál elijo?</h2>
       <p class="intro">Depende de tu situación. Aquí va la guía rápida.</p>
@@ -2409,7 +2431,7 @@ Le facilitamos el sistema para que lo produzca con autonomía.
     </div>
 
     <!-- ═══ PLANTILLA ═══ -->
-    <div class="section fade" id="plantilla" data-nav="#plantilla">
+    <div class="section fade" id="plantilla" data-nav="#discovery">
       <span class="section-number nb">09 · RECURSO</span>
       <h2>Plantilla: System Instructions para cualquier proyecto</h2>
       <p class="intro">Copia esta plantilla, reemplaza los <strong style="color:var(--text)">[CORCHETES]</strong> con tu información, y pégala en Custom GPT o Chatbase. Funciona para cualquier negocio.</p>
@@ -2729,6 +2751,45 @@ Si reportan problemas → redirigir a [WHATSAPP/EMAIL]
         }
       }
     }
+
+    // ── Side Navigation Logic
+    const sections = Array.from(document.querySelectorAll('.section'));
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+
+    function navigateSections(dir) {
+      const currentScroll = window.pageYOffset + 120;
+      let currentIndex = -1;
+      
+      sections.forEach((s, i) => {
+        if (s.offsetTop <= currentScroll) currentIndex = i;
+      });
+
+      let targetIndex = currentIndex + dir;
+      if (targetIndex < 0) targetIndex = 0;
+      if (targetIndex >= sections.length) targetIndex = sections.length - 1;
+
+      // Handle cases where we are currently "above" the first section
+      if (currentIndex === -1 && dir === 1) targetIndex = 0;
+
+      const target = sections[targetIndex];
+      const y = target.getBoundingClientRect().top + window.pageYOffset - 85;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+
+    window.addEventListener('scroll', () => {
+      const currentScroll = window.pageYOffset + 200;
+      let currentIndex = -1;
+      sections.forEach((s, i) => {
+        if (s.offsetTop <= currentScroll) currentIndex = i;
+      });
+
+      if (currentIndex <= 0) btnPrev.classList.add('hidden');
+      else btnPrev.classList.remove('hidden');
+
+      if (currentIndex >= sections.length - 1) btnNext.classList.add('hidden');
+      else btnNext.classList.remove('hidden');
+    });
   </script>
 </body>
 </html>
